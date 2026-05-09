@@ -1,4 +1,4 @@
-# Real Estate Django App
+# Real Estate App
 
 ## Run locally
 

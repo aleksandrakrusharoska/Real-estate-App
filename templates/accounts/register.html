@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% block title %}Register{% endblock %}
+
+{% block content %}
+    <section class="section">
+        <div class="container">
+
+            <div class="row justify-content-center">
+                <div class="col-lg-5 col-md-7">
+
+                    <div class="card shadow-sm">
+                        <div class="card-body p-4">
+
+                            <div class="section-title text-center mb-2">
+                                <h2>Register</h2>
+
+                                <p class="text-muted mb-0">
+                                    Create a new account
+                                </p>
+                            </div>
+
+                            <form method="post">
+                                {% csrf_token %}
+
+                                <div class="mb-3">
+                                    <label for="id_first_name" class="form-label">First Name</label>
+                                    {{ form.first_name }}
+                                    {% if form.first_name.errors %}
+                                        <div class="text-danger small">
+                                            {{ form.first_name.errors }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="id_last_name" class="form-label">Last Name</label>
+                                    {{ form.last_name }}
+                                    {% if form.last_name.errors %}
+                                        <div class="text-danger small">
+                                            {{ form.last_name.errors }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="id_username" class="form-label">Username</label>
+                                    {{ form.username }}
+                                    {% if form.username.errors %}
+                                        <div class="text-danger small">
+                                            {{ form.username.errors }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="id_email" class="form-label">Email</label>
+                                    {{ form.email }}
+                                    {% if form.email.errors %}
+                                        <div class="text-danger small">
+                                            {{ form.email.errors }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="mb-3 position-relative">
+                                    <label for="id_password1" class="form-label">Password</label>
+                                    {{ form.password1 }}
+
+                                    <span class="toggle-password" onclick="togglePassword('id_password1', this)">
+                                        <i class="bi bi-eye"></i>
+                                    </span>
+
+                                    {% if form.password1.errors %}
+                                        <div class="text-danger small">
+                                            {{ form.password1.errors }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="mb-4 position-relative">
+                                    <label for="id_password2" class="form-label">Confirm Password</label>
+                                    {{ form.password2 }}
+
+                                    <span class="toggle-password" onclick="togglePassword('id_password2', this)">
+                                        <i class="bi bi-eye"></i>
+                                    </span>
+
+                                    {% if form.password2.errors %}
+                                        <div class="text-danger small">
+                                            {{ form.password2.errors }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <button type="submit" class="btn w-100" style="background-color: var(--accent-color); color: var(--contrast-color); border: none;">
+                                    Register
+                                </button>
+                            </form>
+
+                            <div class="text-center mt-3">
+                                <small class="text-muted">
+                                    Already have an account?
+                                    <a href="{% url 'login' %}">Login</a>
+                                </small>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+{% endblock %}

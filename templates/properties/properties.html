@@ -1,0 +1,485 @@
+{% extends "base.html" %}
+{% block body_class %}properties-page{% endblock %}
+
+{% load static %}
+
+{% block content %}
+
+    <div class="page-title">
+        <div class="heading">
+            <div class="container">
+                <div class="row d-flex justify-content-center text-center">
+                    <div class="col-lg-8">
+                        <h1 class="heading-title">Properties</h1>
+                        <p class="mb-0">
+                            Explore our latest listings and find your dream property today. 
+                            Use our advanced filters to narrow down your search by location, type, and price.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <nav class="breadcrumbs">
+            <div class="container">
+                <ol>
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li class="current">Properties</li>
+                </ol>
+            </div>
+        </nav>
+    </div>
+
+    <section id="properties" class="properties section">
+
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+            <div class="row">
+
+                <div class="col-lg-8">
+
+                    <div class="properties-header mb-4">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                            <div class="view-toggle d-flex gap-2">
+                                <button class="btn btn-outline-secondary btn-sm view-btn active" data-view="grid">
+                                    <i class="bi bi-grid-3x3-gap"></i> Grid
+                                </button>
+                                <button class="btn btn-outline-secondary btn-sm view-btn" data-view="list">
+                                    <i class="bi bi-list"></i> List
+                                </button>
+                            </div>
+                            <form method="GET" action="" id="filterSortForm" class="d-flex gap-3 align-items-center">
+        {% for key, value in request.GET.items %}
+            {% if key != 'sort' and key != 'listing_type' %}
+                <input type="hidden" name="{{ key }}" value="{{ value }}">
+            {% endif %}
+        {% endfor %}
+
+        <div class="filter-type-dropdown">
+            <select name="listing_type" id="header-listing-type" class="form-select form-select-sm">
+                <option value="" {% if not request.GET.listing_type %}selected{% endif %}>All Types</option>
+                <option value="sale" {% if request.GET.listing_type == 'sale' %}selected{% endif %}>For Sale</option>
+                <option value="rent" {% if request.GET.listing_type == 'rent' %}selected{% endif %}>For Rent</option>
+            </select>
+        </div>
+
+        <div class="sort-dropdown">
+            <select name="sort" id="header-sort" class="form-select form-select-sm">
+                <option value="-created_at" {% if request.GET.sort == '-created_at' %}selected{% endif %}>Sort by: Newest</option>
+                <option value="price" {% if request.GET.sort == 'price' %}selected{% endif %}>Price: Low to High</option>
+                <option value="-price" {% if request.GET.sort == '-price' %}selected{% endif %}>Price: High to Low</option>
+                <option value="-views" {% if request.GET.sort == '-views' %}selected{% endif %}>Most Viewed</option>
+            </select>
+        </div>
+    </form>
+
+<script>
+function applySort() {
+    const sortValue = document.getElementById('sort-select').value;
+    const urlParams = new URLSearchParams(window.location.search);
+    
+   
+    urlParams.set('sort', sortValue);
+    
+    window.location.search = urlParams.toString();
+}
+</script>
+                        </div>
+                    </div>
+
+                    <div class="properties-grid view-grid active" data-aos="fade-up" data-aos-delay="200">
+                        <div class="row g-4">
+                            {% for property in properties %}
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="property-card">
+
+                                        <div class="property-image">
+                                            {% include "partials/cover_image.html" with property=property %}
+
+                                            <div class="property-badges">
+                                                <span class="badge bg-primary">
+                                                    {{ property.get_property_type_display }}
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="property-content">
+                                            <div class="property-price">
+                                                {{ property.formatted_price }}
+                                            </div>
+
+                                            <h4 class="property-title">
+                                                {{ property.name }}
+                                            </h4>
+
+                                            <p class="property-location">
+                                                <i class="bi bi-geo-alt"></i> {{ property.city }}
+                                            </p>
+
+                                            <div class="property-features">
+                                                <span><i class="bi bi-house"></i> {{ property.bedrooms }} Beds</span>
+                                                <span><i class="bi bi-water"></i> {{ property.bathrooms }} Bath</span>
+                                                <span><i
+                                                        class="bi bi-arrows-angle-expand"></i> {{ property.area }} m²</span>
+                                            </div>
+
+                                            <div class="property-agent">
+                                                <div class="agent-info d-flex align-items-center gap-2">
+                                                    {% include "partials/agent_avatar.html" with profile_photo=property.owner.profile.photo agent_name=property.owner.get_full_name img_class="agent-avatar-sm" icon_size="1rem" %}
+                                                    <div>
+                                                        {% if not my_view %}
+                                                            <strong>{{ property.owner.get_full_name|default:property.owner.username }}</strong>
+                                                        {% else %}
+                                                            <strong>You</strong>
+                                                        {% endif %}
+                                                        {% if property.owner.profile.phone and not my_view %}
+                                                            <div class="agent-phone-sm"><i class="bi bi-telephone"></i> {{ property.owner.profile.phone }}</div>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <a href="{% url 'property_details' property.id %}"
+                                               class="btn btn-primary w-100">
+                                                View Details
+                                            </a>
+
+                                            {% if my_view %}
+                                                <div class="d-flex gap-2">
+                                                    <a href="{% url 'edit_property' property.id %}"
+                                                       class="btn btn-outline-secondary w-50">
+                                                        Edit
+                                                    </a>
+
+                                                    <a href="{% url 'delete_property' property.id %}"
+                                                       class="btn btn-outline-danger w-50">
+                                                        Delete
+                                                    </a>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+
+                                    </div>
+                                </div>
+                            {% empty %}
+                                {% if my_view %}
+                                    <p>You still haven’t posted any listings.</p>
+                                {% else %}
+                                    <p>There are currently no approved listings.</p>
+                                {% endif %}
+                            {% endfor %}
+
+                        </div>
+                    </div>
+
+                    <div class="properties-list view-list" data-aos="fade-up" data-aos-delay="200">
+                        {% for property in properties %}
+                            <div class="property-list-item">
+                                <div class="row align-items-center">
+
+                                    <div class="col-lg-4">
+                                        <div class="property-image">
+                                            {% include "partials/cover_image.html" with property=property %}
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-8">
+                                        <div class="property-content">
+
+                                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                                <div>
+                                                    <h4 class="property-title mb-1">
+                                                        {{ property.name }}
+                                                    </h4>
+                                                    <p class="property-location mb-2">
+                                                        <i class="bi bi-geo-alt"></i> {{ property.city }}
+                                                    </p>
+                                                </div>
+                                                <div class="property-price">
+                                                    {{ property.formatted_price }}
+                                                </div>
+                                            </div>
+
+                                            <div class="property-features mb-3">
+                                                <span><i class="bi bi-house"></i> {{ property.bedrooms }} Beds</span>
+                                                <span><i class="bi bi-water"></i> {{ property.bathrooms }} Bath</span>
+                                                <span><i
+                                                        class="bi bi-arrows-angle-expand"></i> {{ property.area }} m²</span>
+                                            </div>
+
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="d-flex align-items-center gap-2">
+                                                    {% if property.owner.profile.photo %}
+                                                        <img src="{{ property.owner.profile.photo.url }}" alt="{{ property.owner.get_full_name }}" class="agent-avatar-sm">
+                                                    {% else %}
+                                                        <img src="{% static 'assets/img/real-estate/agent-1.webp' %}" alt="Agent" class="agent-avatar-sm">
+                                                    {% endif %}
+                                                    <div>
+                                                        <strong>{{ property.owner.get_full_name|default:property.owner.username }}</strong>
+                                                        {% if property.owner.profile.phone %}
+                                                            <div class="agent-phone-sm"><i class="bi bi-telephone"></i> {{ property.owner.profile.phone }}</div>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                                <a href="{% url 'property_details' property.id %}"
+                                                   class="btn btn-primary btn-sm">
+                                                    View Details
+                                                </a>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    {% if page_obj.paginator.num_pages > 1 %}
+                    <nav class="mt-5" data-aos="fade-up" data-aos-delay="300">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
+                                <a class="page-link" href="{% if page_obj.has_previous %}?{% if base_query_string %}{{ base_query_string }}&{% endif %}page={{ page_obj.previous_page_number }}{% else %}#{% endif %}">Previous</a>
+                            </li>
+                            {% for num in page_obj.paginator.page_range %}
+                            <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+                                <a class="page-link" href="?{% if base_query_string %}{{ base_query_string }}&{% endif %}page={{ num }}">{{ num }}</a>
+                            </li>
+                            {% endfor %}
+                            <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
+                                <a class="page-link" href="{% if page_obj.has_next %}?{% if base_query_string %}{{ base_query_string }}&{% endif %}page={{ page_obj.next_page_number }}{% else %}#{% endif %}">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
+                    {% endif %}
+
+                </div>
+
+                <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
+
+                    <div class="properties-sidebar">
+
+                        <form method="get" class="filter-widget">
+                            <h5 class="filter-title">Filter Properties</h5>
+
+                            <div class="filter-section">
+                                <label class="form-label">City</label>
+                                
+                                <input type="text"
+                                       name="city"
+                                       class="form-control"
+                                       placeholder="Enter city"
+                                       value="{{ selected_city }}">
+                            </div>
+                        
+                         <div class="filter-section">
+    <label class="form-label">Listing Type</label>
+    <select name="listing_type" id="sidebar-listing-type" class="form-select form-select-sm">
+        <option value="">All</option>
+        <option value="sale" {% if request.GET.listing_type == "sale" %}selected{% endif %}>For Sale</option>
+        <option value="rent" {% if request.GET.listing_type == "rent" %}selected{% endif %}>For Rent</option>
+    </select>
+</div>
+
+                            <div class="filter-section">
+                                <label class="form-label">Property type</label>
+                                <select name="property_type" id="sidebar-property-type" class="form-select form-select-sm">
+                                    <option value="">All</option>
+                                    {% for key, label in property_types %}
+                                        <option value="{{ key }}"
+                                                {% if key == selected_property_type %}selected{% endif %}>
+                                            {{ label }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="filter-section">
+                                <label class="form-label">Price range ($)</label>
+                                <div class="row g-2">
+                                    <div class="col-6">
+                                        <input type="number"
+                                               name="min_price"
+                                               class="form-control"
+                                               placeholder="Min"
+                                               step="0.01"
+                                               value="{{ request.GET.min_price }}">
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="number"
+                                               name="max_price"
+                                               class="form-control"
+                                               placeholder="Max"
+                                               step="0.01"
+                                               value="{{ request.GET.max_price }}">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="filter-section">
+                                <label class="form-label">Minimum area (m²)</label>
+                                <input type="number"
+                                       name="min_area"
+                                       class="form-control"
+                                       placeholder="e.g. 60"
+                                       step="0.01"
+                                       value="{{ request.GET.min_area }}">
+                            </div>
+
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="filter-section">
+                                        <label class="form-label">Bedrooms</label>
+                                        <select name="bedrooms" id="sidebar-bedrooms" class="form-select form-select-sm">
+                                            <option value="">Any</option>
+                                            <option value="1" {% if request.GET.bedrooms == "1" %}selected{% endif %}>1</option>
+                                            <option value="2" {% if request.GET.bedrooms == "2" %}selected{% endif %}>2</option>
+                                            <option value="3" {% if request.GET.bedrooms == "3" %}selected{% endif %}>3</option>
+                                            <option value="4" {% if request.GET.bedrooms == "4" %}selected{% endif %}>4</option>
+                                            <option value="5" {% if request.GET.bedrooms == "5" %}selected{% endif %}>5+</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-6">
+                                    <div class="filter-section">
+                                        <label class="form-label">Bathrooms</label>
+                                        <select name="bathrooms" id="sidebar-bathrooms" class="form-select form-select-sm">
+                                            <option value="">Any</option>
+                                            <option value="1" {% if request.GET.bathrooms == "1" %}selected{% endif %}>1</option>
+                                            <option value="2" {% if request.GET.bathrooms == "2" %}selected{% endif %}>2</option>
+                                            <option value="3" {% if request.GET.bathrooms == "3" %}selected{% endif %}>3</option>
+                                            <option value="4" {% if request.GET.bathrooms == "4" %}selected{% endif %}>4+</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="filter-section">
+                                <label class="form-label">Features</label>
+                                <select name="features"
+                                        id="features-filter"
+                                        class="form-select form-select-sm"
+                                        multiple>
+                                    {% for feature in features %}
+                                        <option value="{{ feature.id }}"
+                                                {% if feature.id|stringformat:"s" in selected_features %}selected{% endif %}>
+                                            {{ feature.name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="filter-section">
+                                <label class="form-label">Keyword search</label>
+                                <input type="text"
+                                       name="q"
+                                       class="form-control"
+                                       placeholder="e.g. garage, solar, elevator"
+                                       value="{{ selected_keyword|default_if_none:'' }}">
+                                <small class="text-muted">
+                                    Searches in name, description, and features
+                                </small>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-100 mt-3">
+                                Apply filters
+                            </button>
+
+                        </form>
+
+                    {% if featured_properties %}
+                    <div class="featured-properties mt-4">
+                        <h5>Featured Properties</h5>
+
+                        {% for fp in featured_properties %}
+                        <div class="featured-item">
+                            <a href="{% url 'property_details' fp.id %}" class="text-decoration-none text-dark">
+                                <div class="row g-3 align-items-center">
+                                    <div class="col-5">
+                                        {% with cover=fp.cover_image %}
+                                        {% if cover %}
+                                            <img src="{{ cover.image.url }}" alt="{{ fp.name }}" class="img-fluid rounded" style="height:70px;object-fit:cover;width:100%;">
+                                        {% else %}
+                                            <div class="rounded bg-light d-flex align-items-center justify-content-center" style="height:70px;">
+                                                <i class="bi bi-house text-muted fs-4"></i>
+                                            </div>
+                                        {% endif %}
+                                        {% endwith %}
+                                    </div>
+                                    <div class="col-7">
+                                        <h6 class="mb-1" style="font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ fp.name }}</h6>
+                                        <p class="text-muted small mb-1">{{ fp.city }}</p>
+                                        <strong class="text-primary">{{ fp.formatted_price }}</strong>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        {% endfor %}
+
+                    </div>
+                    {% endif %}
+
+                    </div>
+
+            </div>
+
+        </div>
+
+
+    </section>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            $('#features-filter').select2({
+                placeholder: "Select features",
+                width: '100%'
+            });
+
+            var noSearchOpts = { minimumResultsForSearch: Infinity, width: '100%' };
+
+            $('#header-listing-type').select2(noSearchOpts).on('change', function() { this.form.submit(); });
+            $('#header-sort').select2(noSearchOpts).on('change', function() { this.form.submit(); });
+
+            $('#sidebar-listing-type').select2(noSearchOpts);
+            $('#sidebar-property-type').select2(noSearchOpts);
+            $('#sidebar-bedrooms').select2(noSearchOpts);
+            $('#sidebar-bathrooms').select2(noSearchOpts);
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const viewButtons = document.querySelectorAll(".view-btn");
+            const gridView = document.querySelector(".view-grid");
+            const listView = document.querySelector(".view-list");
+
+            viewButtons.forEach(button => {
+
+                button.addEventListener("click", function () {
+
+                    const selectedView = this.dataset.view;
+
+                    viewButtons.forEach(btn => btn.classList.remove("active"));
+                    this.classList.add("active");
+
+                    if (selectedView === "grid") {
+                        gridView.classList.add("active");
+                        listView.classList.remove("active");
+                    }
+
+                    if (selectedView === "list") {
+                        listView.classList.add("active");
+                        gridView.classList.remove("active");
+                    }
+
+                });
+
+            });
+
+        });
+    </script>
+
+    {% include "partials/ai_chat_widget.html" %}
+
+{% endblock %}
+
+

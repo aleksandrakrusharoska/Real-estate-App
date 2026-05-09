@@ -1,0 +1,814 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@600;700;800&family=Montserrat:wght@400;500;600&family=Roboto:wght@400;500&display=swap');
+
+/* ── Variables ─────────────────────────────────────────── */
+:root {
+    --adm-bg:          #eaf9f9;
+    --adm-surface:     #ffffff;
+    --adm-elevated:    #f5fcfc;
+    --adm-border:      rgba(44,122,123,0.15);
+    --adm-border-soft: rgba(44,122,123,0.1);
+    --adm-accent:      #2c7a7b;
+    --adm-heading:     #163535;
+    --adm-text:        #323b3b;
+    --adm-muted:       #5a6b6b;
+    --adm-faint:       #8fa5a5;
+    --adm-accent-soft: rgba(44,122,123,0.08);
+    --adm-accent-mid:  rgba(44,122,123,0.18);
+    --adm-red:         #dc2626;
+    --adm-green:       #16a34a;
+    --adm-amber:       #d97706;
+    --adm-radius:      10px;
+    --adm-radius-sm:   7px;
+}
+
+/* ── Global ─────────────────────────────────────────────── */
+body,
+.wrapper,
+.content-wrapper {
+    font-family: 'Roboto', sans-serif !important;
+    background-color: var(--adm-bg) !important;
+    color: var(--adm-text) !important;
+}
+
+/* Global link color — override default blue everywhere */
+a,
+a:link,
+a:visited {
+    color: var(--adm-accent) !important;
+    text-decoration: none !important;
+}
+a:hover { color: var(--adm-heading) !important; }
+
+/* ── Sidebar ─────────────────────────────────────────────── */
+.main-sidebar,
+.sidebar,
+.sidebar-dark-primary,
+.sidebar-light-primary {
+    background: var(--adm-surface) !important;
+    border-right: 1px solid var(--adm-border) !important;
+    box-shadow: none !important;
+}
+
+.brand-link,
+.sidebar-dark-primary .brand-link,
+.sidebar-light-primary .brand-link {
+    background: var(--adm-surface) !important;
+    border-bottom: 1px solid var(--adm-border) !important;
+    padding: 18px 20px !important;
+    text-decoration: none !important;
+}
+
+.brand-link .brand-text,
+.sidebar-dark-primary .brand-link .brand-text,
+.sidebar-light-primary .brand-link .brand-text {
+    font-family: 'Raleway', sans-serif !important;
+    font-size: 15px !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.02em !important;
+    color: var(--adm-heading) !important;
+}
+
+/* All sidebar nav text — override dark variants */
+.sidebar-dark-primary .nav-sidebar .nav-item .nav-link,
+.sidebar-light-primary .nav-sidebar .nav-item .nav-link,
+.nav-sidebar .nav-item .nav-link {
+    color: var(--adm-muted) !important;
+    background: transparent !important;
+    border-radius: var(--adm-radius-sm) !important;
+    margin: 1px 8px !important;
+    padding: 9px 14px !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    font-family: 'Montserrat', sans-serif !important;
+    transition: all 0.18s ease !important;
+    border-left: 2px solid transparent !important;
+}
+
+.sidebar-dark-primary .nav-sidebar .nav-item .nav-link:hover,
+.sidebar-light-primary .nav-sidebar .nav-item .nav-link:hover,
+.nav-sidebar .nav-item .nav-link:hover {
+    background: var(--adm-accent-soft) !important;
+    color: var(--adm-accent) !important;
+}
+
+.sidebar-dark-primary .nav-sidebar > .nav-item > .nav-link.active,
+.sidebar-light-primary .nav-sidebar > .nav-item > .nav-link.active,
+.nav-sidebar > .nav-item > .nav-link.active {
+    background: var(--adm-accent-soft) !important;
+    color: var(--adm-accent) !important;
+    border-left: 2px solid var(--adm-accent) !important;
+    font-weight: 600 !important;
+}
+
+.nav-sidebar .nav-item .nav-link p,
+.nav-sidebar .nav-item .nav-link i {
+    color: inherit !important;
+    font-family: inherit !important;
+}
+
+/* Sidebar section headers */
+.nav-sidebar .nav-header {
+    color: var(--adm-faint) !important;
+    font-family: 'Montserrat', sans-serif !important;
+    font-size: 10px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.1em !important;
+    text-transform: uppercase !important;
+    padding: 12px 18px 4px !important;
+}
+
+/* User panel in sidebar */
+.sidebar .user-panel,
+.sidebar-dark-primary .user-panel {
+    border-bottom: 1px solid var(--adm-border) !important;
+}
+.sidebar .user-panel .info,
+.sidebar .user-panel .info a {
+    font-family: 'Montserrat', sans-serif !important;
+    color: var(--adm-text) !important;
+    font-size: 13px !important;
+}
+
+/* ── Top navbar ─────────────────────────────────────────── */
+.main-header.navbar {
+    background: var(--adm-surface) !important;
+    border-bottom: 1px solid var(--adm-border) !important;
+    box-shadow: none !important;
+}
+
+.navbar-nav .nav-link,
+.main-header .navbar-nav .nav-link {
+    color: var(--adm-muted) !important;
+    font-size: 13px !important;
+    font-family: 'Montserrat', sans-serif !important;
+}
+
+.main-header .navbar-nav .nav-link:hover {
+    color: var(--adm-accent) !important;
+}
+
+/* ── Content area ───────────────────────────────────────── */
+.content-wrapper {
+    background: var(--adm-bg) !important;
+    padding: 28px 30px !important;
+}
+
+.content-header {
+    padding: 0 0 20px !important;
+}
+
+.content-header h1 {
+    font-family: 'Raleway', sans-serif !important;
+    font-size: 24px !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.03em !important;
+    color: var(--adm-heading) !important;
+}
+
+.breadcrumb {
+    background: transparent !important;
+    padding: 0 !important;
+}
+
+.breadcrumb-item,
+.breadcrumb-item a {
+    color: var(--adm-muted) !important;
+    font-size: 12px !important;
+    font-family: 'Montserrat', sans-serif !important;
+}
+
+.breadcrumb-item.active { color: var(--adm-accent) !important; }
+
+/* ── Django changelist page ─────────────────────────────── */
+
+/* Table link colors */
+#result_list td a,
+#result_list th a,
+#result_list thead th a,
+.change-list .results table td a,
+.change-list .results table th a {
+    color: var(--adm-accent) !important;
+    font-weight: 500 !important;
+}
+#result_list thead th a:hover,
+#result_list td a:hover { color: var(--adm-heading) !important; }
+
+/* Column sort headers */
+#result_list thead th { font-family: 'Montserrat', sans-serif !important; }
+
+/* Object tools — "Add X" button */
+.object-tools a,
+.object-tools a.addlink,
+ul.object-tools li a {
+    background: var(--adm-accent) !important;
+    color: #fff !important;
+    border-radius: 50px !important;
+    font-family: 'Montserrat', sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    padding: 9px 22px !important;
+    text-decoration: none !important;
+    border: none !important;
+    transition: background 0.18s ease, box-shadow 0.18s ease !important;
+}
+.object-tools a:hover,
+ul.object-tools li a:hover {
+    background: var(--adm-heading) !important;
+    color: #fff !important;
+    box-shadow: 0 4px 14px rgba(44,122,123,0.3) !important;
+}
+
+/* Search bar */
+#changelist-search input[type="text"],
+#changelist-search input[type="search"] {
+    border: 1px solid var(--adm-border) !important;
+    border-radius: var(--adm-radius-sm) !important;
+    font-family: 'Roboto', sans-serif !important;
+    color: var(--adm-text) !important;
+    padding: 7px 14px !important;
+    background: var(--adm-surface) !important;
+}
+#changelist-search input[type="text"]:focus,
+#changelist-search input[type="search"]:focus {
+    border-color: var(--adm-accent) !important;
+    box-shadow: 0 0 0 3px var(--adm-accent-soft) !important;
+    outline: none !important;
+}
+
+/* Search / Go buttons — override the bright blue */
+#changelist-search input[type="submit"],
+#changelist-search button[type="submit"],
+#changelist-form .actions select + button,
+.change-list .changelist-filter-search button {
+    background: var(--adm-accent) !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: var(--adm-radius-sm) !important;
+    font-family: 'Montserrat', sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    padding: 7px 18px !important;
+    transition: background 0.18s ease !important;
+    cursor: pointer !important;
+}
+#changelist-search input[type="submit"]:hover { background: var(--adm-heading) !important; }
+
+/* Actions "Go" button */
+.actions button,
+#changelist-form .actions button[type="submit"] {
+    background: var(--adm-accent) !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 50px !important;
+    font-family: 'Montserrat', sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    padding: 7px 20px !important;
+    cursor: pointer !important;
+    transition: background 0.18s ease !important;
+}
+.actions button:hover { background: var(--adm-heading) !important; }
+
+/* Actions dropdown select */
+.actions select {
+    border: 1px solid var(--adm-border) !important;
+    border-radius: var(--adm-radius-sm) !important;
+    font-family: 'Roboto', sans-serif !important;
+    font-size: 13px !important;
+    padding: 7px 12px !important;
+    color: var(--adm-text) !important;
+    background: var(--adm-surface) !important;
+}
+
+/* ── Cards ──────────────────────────────────────────────── */
+.card {
+    background: var(--adm-surface) !important;
+    border: 1px solid var(--adm-border) !important;
+    border-radius: var(--adm-radius) !important;
+    box-shadow: 0 1px 3px rgba(44,122,123,0.05) !important;
+}
+
+.card-header {
+    background: var(--adm-elevated) !important;
+    border-bottom: 1px solid var(--adm-border-soft) !important;
+    padding: 15px 20px !important;
+    border-radius: var(--adm-radius) var(--adm-radius) 0 0 !important;
+}
+
+.card-title {
+    font-family: 'Raleway', sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.01em !important;
+    color: var(--adm-heading) !important;
+    margin: 0 !important;
+}
+
+.card-body { color: var(--adm-text) !important; }
+
+/* ── Tables ─────────────────────────────────────────────── */
+.table {
+    color: var(--adm-text) !important;
+    font-size: 13px !important;
+    font-family: 'Roboto', sans-serif !important;
+}
+
+.table thead th {
+    background: var(--adm-elevated) !important;
+    border-bottom: 1px solid var(--adm-border) !important;
+    border-top: none !important;
+    color: var(--adm-faint) !important;
+    font-size: 10.5px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.1em !important;
+    text-transform: uppercase !important;
+    padding: 12px 18px !important;
+    font-family: 'Montserrat', sans-serif !important;
+}
+
+.table td {
+    border-bottom: 1px solid var(--adm-border-soft) !important;
+    border-top: none !important;
+    padding: 13px 18px !important;
+    vertical-align: middle !important;
+    color: var(--adm-text) !important;
+}
+
+.table-striped tbody tr:nth-of-type(odd)  { background: var(--adm-elevated) !important; }
+.table-striped tbody tr:nth-of-type(even) { background: var(--adm-surface) !important; }
+.table tbody tr:hover td {
+    background: var(--adm-accent-soft) !important;
+    color: var(--adm-text) !important;
+}
+
+/* ── Badges ─────────────────────────────────────────────── */
+.badge {
+    font-family: 'Montserrat', sans-serif !important;
+    font-size: 10.5px !important;
+    font-weight: 600 !important;
+    padding: 4px 10px !important;
+    border-radius: 4px !important;
+    letter-spacing: 0.04em !important;
+}
+
+.badge-danger,  .badge.bg-danger  { background: rgba(220,38,38,0.1)  !important; color: var(--adm-red)   !important; border: 1px solid rgba(220,38,38,0.22)  !important; }
+.badge-primary, .badge.bg-primary { background: var(--adm-accent-soft) !important; color: var(--adm-accent) !important; border: 1px solid var(--adm-border) !important; }
+.badge-success, .badge.bg-success { background: rgba(22,163,74,0.1)   !important; color: var(--adm-green) !important; border: 1px solid rgba(22,163,74,0.22)   !important; }
+.badge-warning, .badge.bg-warning { background: rgba(217,119,6,0.1)   !important; color: var(--adm-amber) !important; border: 1px solid rgba(217,119,6,0.22)   !important; }
+
+/* ── Buttons ────────────────────────────────────────────── */
+.btn {
+    font-family: 'Montserrat', sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    border-radius: var(--adm-radius-sm) !important;
+    padding: 8px 18px !important;
+    transition: all 0.18s ease !important;
+    box-shadow: none !important;
+}
+
+.btn-primary,
+.btn-info {
+    background: var(--adm-accent) !important;
+    color: #fff !important;
+    border-color: var(--adm-accent) !important;
+}
+.btn-primary:hover, .btn-primary:focus,
+.btn-info:hover,   .btn-info:focus {
+    background: var(--adm-heading) !important;
+    color: #fff !important;
+    border-color: var(--adm-heading) !important;
+    box-shadow: 0 4px 14px rgba(44,122,123,0.3) !important;
+}
+
+.btn-success {
+    background: var(--adm-accent) !important;
+    color: #fff !important;
+    border-color: var(--adm-accent) !important;
+}
+.btn-success:hover, .btn-success:focus {
+    background: var(--adm-heading) !important;
+    color: #fff !important;
+    border-color: var(--adm-heading) !important;
+}
+
+.btn-warning {
+    background: transparent !important;
+    color: var(--adm-amber) !important;
+    border: 1.5px solid rgba(217,119,6,0.45) !important;
+}
+.btn-warning:hover, .btn-warning:focus {
+    background: var(--adm-amber) !important;
+    color: #fff !important;
+    border-color: var(--adm-amber) !important;
+}
+
+.btn-danger {
+    background: transparent !important;
+    color: var(--adm-red) !important;
+    border: 1.5px solid rgba(220,38,38,0.45) !important;
+}
+.btn-danger:hover, .btn-danger:focus {
+    background: var(--adm-red) !important;
+    color: #fff !important;
+    border-color: var(--adm-red) !important;
+}
+
+/* ── Forms ──────────────────────────────────────────────── */
+.form-control {
+    background: var(--adm-surface) !important;
+    border: 1px solid var(--adm-border) !important;
+    border-radius: var(--adm-radius-sm) !important;
+    color: var(--adm-text) !important;
+    font-size: 13px !important;
+    font-family: 'Roboto', sans-serif !important;
+}
+.form-control:focus {
+    background: var(--adm-surface) !important;
+    border-color: var(--adm-accent) !important;
+    color: var(--adm-text) !important;
+    box-shadow: 0 0 0 3px var(--adm-accent-soft) !important;
+}
+
+label {
+    font-size: 12.5px !important;
+    font-weight: 600 !important;
+    color: var(--adm-muted) !important;
+    font-family: 'Montserrat', sans-serif !important;
+    letter-spacing: 0.02em !important;
+}
+
+/* ── Pagination ─────────────────────────────────────────── */
+.page-link {
+    background: var(--adm-surface) !important;
+    border-color: var(--adm-border) !important;
+    color: var(--adm-muted) !important;
+    font-size: 13px !important;
+    font-family: 'Montserrat', sans-serif !important;
+}
+.page-item.active .page-link {
+    background: var(--adm-accent) !important;
+    border-color: var(--adm-accent) !important;
+    color: #fff !important;
+}
+
+/* ── Footer ─────────────────────────────────────────────── */
+.main-footer {
+    background: var(--adm-surface) !important;
+    border-top: 1px solid var(--adm-border) !important;
+    color: var(--adm-faint) !important;
+    font-size: 12px !important;
+    font-family: 'Roboto', sans-serif !important;
+}
+
+/* ── Welcome sign ───────────────────────────────────────── */
+.welcome-sign {
+    font-family: 'Raleway', sans-serif !important;
+    font-size: 1.55rem !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.04em !important;
+    color: var(--adm-heading) !important;
+    text-align: left !important;
+    padding: 0 0 22px !important;
+    margin: 0 0 28px !important;
+    border-bottom: 1px solid var(--adm-border) !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+}
+.welcome-sign::before {
+    content: '';
+    display: inline-block;
+    width: 4px; height: 22px;
+    background: var(--adm-accent);
+    border-radius: 2px;
+    flex-shrink: 0;
+}
+
+/* ── Changelist filters ─────────────────────────────────── */
+#changelist-filter {
+    background: var(--adm-surface) !important;
+    border-left: 1px solid var(--adm-border) !important;
+}
+#changelist-filter h2 {
+    background: var(--adm-elevated) !important;
+    border-bottom: 1px solid var(--adm-border) !important;
+    font-family: 'Montserrat', sans-serif !important;
+    font-size: 10.5px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.08em !important;
+    text-transform: uppercase !important;
+    color: var(--adm-muted) !important;
+    padding: 12px 16px !important;
+}
+#changelist-filter h3 {
+    font-family: 'Montserrat', sans-serif !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    color: var(--adm-muted) !important;
+    padding: 10px 16px 4px !important;
+}
+#changelist-filter ul { padding: 0 10px 10px !important; }
+#changelist-filter ul li a {
+    font-size: 12.5px !important;
+    font-family: 'Roboto', sans-serif !important;
+    color: var(--adm-muted) !important;
+    padding: 4px 8px !important;
+    border-radius: 5px !important;
+    display: block !important;
+}
+#changelist-filter ul li.selected a {
+    background: var(--adm-accent-soft) !important;
+    color: var(--adm-accent) !important;
+    font-weight: 600 !important;
+}
+
+/* ── Alerts ─────────────────────────────────────────────── */
+.alert-success { background: rgba(22,163,74,0.08) !important;  border-color: rgba(22,163,74,0.25) !important;  color: var(--adm-green) !important; border-radius: var(--adm-radius-sm) !important; }
+.alert-warning { background: rgba(217,119,6,0.08) !important;  border-color: rgba(217,119,6,0.25) !important;  color: var(--adm-amber) !important; border-radius: var(--adm-radius-sm) !important; }
+.alert-danger,
+.alert-error   { background: rgba(220,38,38,0.08) !important;  border-color: rgba(220,38,38,0.25) !important;  color: var(--adm-red) !important;   border-radius: var(--adm-radius-sm) !important; }
+
+/* ── Submit row ─────────────────────────────────────────── */
+.submit-row {
+    background: var(--adm-elevated) !important;
+    border-top: 1px solid var(--adm-border) !important;
+    padding: 14px 20px !important;
+}
+.submit-row input[type="submit"],
+.submit-row a.deletelink {
+    border-radius: var(--adm-radius-sm) !important;
+    font-family: 'Montserrat', sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+}
+
+/* ── Fieldsets ──────────────────────────────────────────── */
+fieldset {
+    border: 1px solid var(--adm-border) !important;
+    border-radius: var(--adm-radius) !important;
+    padding: 20px !important;
+    margin-bottom: 20px !important;
+}
+fieldset h2 {
+    font-family: 'Raleway', sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.01em !important;
+    color: var(--adm-heading) !important;
+}
+
+/* ── Hide old small-boxes ───────────────────────────────── */
+.small-box { display: none !important; }
+
+/* ════════════════════════════════════════════════════════════
+   HIGH-SPECIFICITY OVERRIDES — beat AdminLTE/Jazzmin defaults
+   ════════════════════════════════════════════════════════════ */
+
+/* Sidebar background — covers dark AND light variants */
+html body .main-sidebar,
+html body .main-sidebar .sidebar,
+html body aside.main-sidebar,
+html body [class*="sidebar-dark"],
+html body [class*="sidebar-light"] {
+    background-color: #ffffff !important;
+    background: #ffffff !important;
+    box-shadow: 1px 0 0 rgba(44,122,123,0.15) !important;
+}
+
+/* Sidebar brand */
+html body .main-sidebar .brand-link,
+html body .main-sidebar a.brand-link {
+    background-color: #ffffff !important;
+    border-bottom: 1px solid rgba(44,122,123,0.15) !important;
+}
+html body .main-sidebar .brand-link .brand-text {
+    color: #163535 !important;
+}
+
+/* All sidebar nav links — dark theme override */
+html body [class*="sidebar-dark"] .nav-sidebar .nav-link,
+html body [class*="sidebar-dark"] .nav-sidebar .nav-link p,
+html body [class*="sidebar-dark"] .nav-sidebar .nav-link i,
+html body .main-sidebar .nav-sidebar .nav-link {
+    color: #5a6b6b !important;
+    background-color: transparent !important;
+}
+html body [class*="sidebar-dark"] .nav-sidebar .nav-link:hover,
+html body .main-sidebar .nav-sidebar .nav-link:hover {
+    color: #2c7a7b !important;
+    background-color: rgba(44,122,123,0.08) !important;
+}
+html body [class*="sidebar-dark"] .nav-sidebar > .nav-item > .nav-link.active,
+html body .main-sidebar .nav-sidebar > .nav-item > .nav-link.active {
+    color: #2c7a7b !important;
+    background-color: rgba(44,122,123,0.08) !important;
+    border-left: 2px solid #2c7a7b !important;
+}
+html body .main-sidebar .nav-header {
+    color: #8fa5a5 !important;
+}
+
+/* User panel */
+html body .main-sidebar .user-panel {
+    border-bottom-color: rgba(44,122,123,0.15) !important;
+}
+html body .main-sidebar .user-panel .info,
+html body .main-sidebar .user-panel .info a {
+    color: #323b3b !important;
+}
+
+/* Navbar */
+html body .main-header,
+html body .main-header.navbar {
+    background-color: #ffffff !important;
+    border-bottom: 1px solid rgba(44,122,123,0.15) !important;
+    box-shadow: none !important;
+}
+
+/* Content background */
+html body .content-wrapper {
+    background-color: #eaf9f9 !important;
+}
+
+/* Page heading h1 */
+html body .content-header h1 {
+    font-family: 'Raleway', sans-serif !important;
+    color: #163535 !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.03em !important;
+}
+
+/* ALL links in content — override Bootstrap blue */
+html body .content-wrapper a,
+html body #content a,
+html body #changelist a,
+html body #result_list a {
+    color: #2c7a7b !important;
+}
+html body .content-wrapper a:hover,
+html body #content a:hover {
+    color: #163535 !important;
+}
+
+/* ALL buttons — override Bootstrap blue */
+html body .btn-primary,
+html body .btn-info,
+html body .btn-secondary,
+html body .btn-success {
+    background-color: #2c7a7b !important;
+    background: #2c7a7b !important;
+    border-color: #2c7a7b !important;
+    color: #ffffff !important;
+}
+html body .btn-primary:hover,
+html body .btn-info:hover,
+html body .btn-secondary:hover,
+html body .btn-success:hover {
+    background-color: #163535 !important;
+    background: #163535 !important;
+    border-color: #163535 !important;
+    color: #ffffff !important;
+}
+
+/* Search / Go submit inputs */
+html body input[type="submit"],
+html body button[type="submit"] {
+    background-color: #2c7a7b !important;
+    border-color: #2c7a7b !important;
+    color: #ffffff !important;
+}
+html body input[type="submit"]:hover,
+html body button[type="submit"]:hover {
+    background-color: #163535 !important;
+    border-color: #163535 !important;
+}
+
+/* Add object tools button */
+html body ul.object-tools a,
+html body .object-tools a {
+    background-color: #2c7a7b !important;
+    color: #ffffff !important;
+}
+html body ul.object-tools a:hover,
+html body .object-tools a:hover {
+    background-color: #163535 !important;
+    color: #ffffff !important;
+}
+
+/* Footer */
+html body .main-footer {
+    background-color: #ffffff !important;
+    border-top: 1px solid rgba(44,122,123,0.15) !important;
+}
+
+/* ── Force teal on all AdminLTE accent/color classes ── */
+html body .bg-primary,
+html body .bg-info,
+html body .bg-teal,
+html body .accent-primary,
+html body .btn.bg-primary,
+html body .btn.bg-info {
+    background-color: #2c7a7b !important;
+    border-color: #2c7a7b !important;
+    color: #ffffff !important;
+}
+
+html body .bg-success,
+html body .btn.bg-success {
+    background-color: #2c7a7b !important;
+    border-color: #2c7a7b !important;
+    color: #ffffff !important;
+}
+
+/* Jazzmin pill "Add X" and changelist action buttons */
+html body .object-tools a,
+html body .object-tools a.addlink,
+html body .object-tools a.viewsitelink {
+    background-color: #2c7a7b !important;
+    border-color: #2c7a7b !important;
+    color: #ffffff !important;
+}
+
+/* Sidebar teal accent active link */
+html body .sidebar-light-teal .nav-sidebar > .nav-item > .nav-link.active,
+html body .sidebar-light-primary .nav-sidebar > .nav-item > .nav-link.active {
+    background-color: rgba(44,122,123,0.1) !important;
+    color: #2c7a7b !important;
+}
+
+/* Make Django admin search form inline */
+form.search {
+    display: flex !important;
+    gap: 12px !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+    margin-bottom: 20px !important;
+}
+
+.search label,
+.search input[type="text"],
+.search input[type="search"],
+.search button,
+.search input[type="submit"] {
+    margin: 0 !important;
+}
+
+.search input[type="text"],
+.search input[type="search"] {
+    flex: 1 !important;
+    min-width: 200px !important;
+}
+
+/* Change blue option highlight to green - all contexts */
+option:checked {
+    background: #2c7a7b !important;
+    background-color: #2c7a7b !important;
+    background-image: linear-gradient(#2c7a7b, #2c7a7b) !important;
+    color: white !important;
+}
+
+option:hover {
+    background: #2c7a7b !important;
+    color: white !important;
+}
+
+/* Native select option styling */
+select option {
+    background-color: white !important;
+    color: var(--adm-text) !important;
+}
+
+select option:checked {
+    background: #2c7a7b !important;
+    background-image: linear-gradient(#2c7a7b, #2c7a7b) !important;
+    color: white !important;
+}
+
+select:focus {
+    outline-color: #2c7a7b !important;
+    border-color: #2c7a7b !important;
+}
+
+/* Force green for select2 highlighted option - all states */
+.select2-results__option--highlighted {
+    background-color: #2c7a7b !important;
+    color: white !important;
+}
+
+.select2-results__option--highlighted[aria-selected],
+.select2-results__option[aria-selected="true"] {
+    background-color: #2c7a7b !important;
+    color: white !important;
+}
+
+.select2-container--default .select2-results__option--highlighted,
+.select2-container--default .select2-results__option[aria-selected="true"] {
+    background-color: #2c7a7b !important;
+    color: white !important;
+}
+
+.select2-selection__rendered {
+    color: #2c7a7b !important;
+    font-weight: 500 !important;
+}

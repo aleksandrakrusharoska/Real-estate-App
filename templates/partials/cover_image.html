@@ -1,0 +1,13 @@
+{% load static %}
+
+{% with cover=property.cover_image %}
+    {% if cover %}
+        <img src="{{ cover.image.url }}"
+             class="{{ img_class|default:'img-fluid' }}"
+             alt="{{ property.name }}">
+    {% else %}
+        <img src="{% static 'assets/img/real-estate/property-exterior-1.webp' %}"
+             class="{{ img_class|default:'img-fluid' }}"
+             alt="No image available">
+    {% endif %}
+{% endwith %}

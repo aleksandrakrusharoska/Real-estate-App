@@ -1,0 +1,436 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block content %}
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@600;700;800&family=Montserrat:wght@400;500;600&family=Roboto:wght@400;500&display=swap');
+
+#content {
+    font-family: 'Roboto', sans-serif;
+    background: #eaf9f9;
+    min-height: 100vh;
+    padding: 32px 36px;
+}
+
+.welcome-sign {
+    font-family: 'Raleway', sans-serif !important;
+    font-size: 1.5rem !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.04em !important;
+    color: #163535 !important;
+    text-align: left !important;
+    padding: 0 0 20px !important;
+    margin: 0 0 28px !important;
+    border-bottom: 1px solid rgba(44,122,123,0.15) !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+}
+
+.welcome-sign::before {
+    content: '';
+    display: inline-block;
+    width: 4px;
+    height: 22px;
+    background: #2c7a7b;
+    border-radius: 2px;
+    flex-shrink: 0;
+}
+
+.dash-stats {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+@media (max-width: 1100px) { .dash-stats { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 640px)  { .dash-stats { grid-template-columns: repeat(2, 1fr); } }
+
+.dash-stat {
+    background: #fff;
+    border: 1px solid rgba(44,122,123,0.15);
+    border-radius: 12px;
+    padding: 22px 24px 18px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dash-stat::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: #2c7a7b;
+    border-radius: 12px 12px 0 0;
+}
+
+.dash-stat:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(44,122,123,0.1);
+}
+
+.dash-stat-bg-icon {
+    position: absolute;
+    right: 14px;
+    bottom: 10px;
+    font-size: 2.8rem;
+    opacity: 0.06;
+    pointer-events: none;
+}
+
+.dash-stat-label {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #a1a1aa;
+    margin-bottom: 10px;
+}
+
+.dash-stat-value {
+    font-family: 'Raleway', sans-serif;
+    font-size: 2.8rem;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: #2c7a7b;
+}
+
+.dash-actions {
+    background: #fff;
+    border: 1px solid rgba(44,122,123,0.15);
+    border-radius: 12px;
+    padding: 16px 22px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.dash-actions-label {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #a1a1aa;
+    flex-shrink: 0;
+    margin-right: 6px;
+}
+
+.dash-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 18px;
+    border-radius: 8px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    border: 1.5px solid;
+    transition: all 0.18s ease;
+    cursor: pointer;
+}
+
+.dash-btn-teal {
+    color: #2c7a7b;
+    border-color: #2c7a7b;
+    background: transparent;
+}
+.dash-btn-teal:hover {
+    background: #2c7a7b;
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(44,122,123,0.25);
+}
+
+.dash-btn-green {
+    color: #2c7a7b;
+    border-color: rgba(44,122,123,0.5);
+    background: transparent;
+}
+.dash-btn-green:hover {
+    background: #2c7a7b;
+    color: #fff;
+    border-color: #2c7a7b;
+    box-shadow: 0 4px 14px rgba(44,122,123,0.25);
+}
+
+.dash-btn-amber {
+    color: #2c7a7b;
+    border-color: rgba(44,122,123,0.5);
+    background: transparent;
+}
+.dash-btn-amber:hover {
+    background: #2c7a7b;
+    color: #fff;
+    border-color: #2c7a7b;
+    box-shadow: 0 4px 14px rgba(44,122,123,0.25);
+}
+
+.dash-table-card {
+    background: #fff;
+    border: 1px solid rgba(44,122,123,0.15);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.dash-table-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 22px;
+    background: #faf9f7;
+    border-bottom: 1px solid #ece9e3;
+}
+
+.dash-table-title {
+    font-family: 'Raleway', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: #163535;
+}
+
+.dash-table-header {
+    border-bottom-color: rgba(44,122,123,0.1) !important;
+}
+
+.dash-table-meta {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    color: #a1a1aa;
+}
+
+.dash-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.dash-table thead th {
+    background: #faf9f7;
+    padding: 11px 20px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #a1a1aa;
+    border-bottom: 1px solid #ece9e3;
+    text-align: left;
+}
+
+.dash-table tbody tr {
+    border-bottom: 1px solid #f0ede8;
+    transition: background 0.15s ease;
+}
+
+.dash-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.dash-table tbody tr:nth-child(even) {
+    background: #faf9f7;
+}
+
+.dash-table tbody tr:hover {
+    background: rgba(44,122,123,0.05);
+}
+
+.dash-table td {
+    padding: 13px 20px;
+    font-size: 13.5px;
+    color: #18181b;
+    vertical-align: middle;
+}
+
+.dash-table td.td-name {
+    font-weight: 600;
+    color: #18181b;
+}
+
+.dash-table td.td-price {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    color: #2c7a7b;
+    font-weight: 600;
+}
+
+.dash-table td.td-date {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    color: #a1a1aa;
+}
+
+.dash-badge {
+    display: inline-block;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    padding: 3px 10px;
+    border-radius: 4px;
+}
+
+.dash-badge-sale {
+    background: rgba(220,38,38,0.08);
+    color: #dc2626;
+    border: 1px solid rgba(220,38,38,0.2);
+}
+
+.dash-badge-rent {
+    background: rgba(37,99,235,0.08);
+    color: #2563eb;
+    border: 1px solid rgba(37,99,235,0.2);
+}
+
+.dash-empty {
+    text-align: center;
+    padding: 40px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    color: #a1a1aa;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const selects = document.querySelectorAll('select');
+    selects.forEach(select => {
+        if (!select.classList.contains('select2-hidden-accessible')) {
+            $(select).select2({
+                width: '100%'
+            });
+        }
+    });
+});
+</script>
+
+{% if jazzmin_settings.welcome_sign %}
+<div class="welcome-sign">{{ jazzmin_settings.welcome_sign }}</div>
+{% endif %}
+
+<div class="dash-stats">
+
+    <div class="dash-stat s-teal">
+        <div class="dash-stat-label">Total Properties</div>
+        <div class="dash-stat-value">{{ properties_count }}</div>
+        <div class="dash-stat-bg-icon"><i class="fas fa-building"></i></div>
+    </div>
+
+    <div class="dash-stat s-red">
+        <div class="dash-stat-label">For Sale</div>
+        <div class="dash-stat-value">{{ sale_count }}</div>
+        <div class="dash-stat-bg-icon"><i class="fas fa-tags"></i></div>
+    </div>
+
+    <div class="dash-stat s-blue">
+        <div class="dash-stat-label">For Rent</div>
+        <div class="dash-stat-value">{{ rent_count }}</div>
+        <div class="dash-stat-bg-icon"><i class="fas fa-key"></i></div>
+    </div>
+
+    <div class="dash-stat s-green">
+        <div class="dash-stat-label">Total Users</div>
+        <div class="dash-stat-value">{{ users_count }}</div>
+        <div class="dash-stat-bg-icon"><i class="fas fa-users"></i></div>
+    </div>
+
+    <div class="dash-stat s-amber">
+        <div class="dash-stat-label">Features</div>
+        <div class="dash-stat-value">{{ features_count }}</div>
+        <div class="dash-stat-bg-icon"><i class="fas fa-star"></i></div>
+    </div>
+
+</div>
+
+<div class="dash-actions">
+    <span class="dash-actions-label">Quick actions</span>
+    <a href="/admin/properties/property/add/" class="dash-btn dash-btn-teal">
+        <i class="fas fa-plus" style="font-size:11px;"></i> Add Property
+    </a>
+    <a href="/admin/auth/user/add/" class="dash-btn dash-btn-green">
+        <i class="fas fa-user-plus" style="font-size:11px;"></i> Add User
+    </a>
+    <a href="/admin/properties/feature/add/" class="dash-btn dash-btn-amber">
+        <i class="fas fa-star" style="font-size:11px;"></i> Add Feature
+    </a>
+      <a href="/admin/core/blogpost/add/" class="dash-btn dash-btn-amber">
+        <i class="fas  fa-pen-to-square" style="font-size:11px;"></i> Add Blog Post
+    </a>
+    
+</div>
+
+<div class="dash-table-card">
+    <div class="dash-table-header">
+        <span class="dash-table-title">Latest Properties</span>
+        <span class="dash-table-meta">most recent 5</span>
+    </div>
+    <table class="dash-table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Type</th>
+                <th>Price</th>
+                <th>City</th>
+                <th>Created</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for property in latest_properties %}
+            <tr>
+                <td class="td-name">{{ property.name }}</td>
+                <td>
+                    {% if property.listing_type == 'sale' %}
+                        <span class="dash-badge dash-badge-sale">Sale</span>
+                    {% else %}
+                        <span class="dash-badge dash-badge-rent">Rent</span>
+                    {% endif %}
+                </td>
+                <td class="td-price">{{ property.formatted_price }}</td>
+                <td>{{ property.city }}</td>
+                <td class="td-date">{{ property.created_at|date:"d M Y" }}</td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="5" class="dash-empty">No properties yet</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="dash-table-card" style="margin-top: 20px;">
+    <div class="dash-table-header">
+        <span class="dash-table-title">Tour Requests</span>
+        <span class="dash-table-meta">most recent 5</span>
+    </div>
+    <table class="dash-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Property</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Created</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for tour in latest_tour_requests %}
+            <tr>
+                <td class="td-name">{{ tour.name }}</td>
+                <td>{{ tour.property.name }}</td>
+                <td>{{ tour.email }}</td>
+                <td>{{ tour.phone|default:"—" }}</td>
+                <td class="td-date">{{ tour.created_at|date:"d M Y" }}</td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="5" class="dash-empty">No tour requests yet</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

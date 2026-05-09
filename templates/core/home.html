@@ -1,0 +1,939 @@
+{% extends "base.html" %}
+{% block body_class %}index-page{% endblock %}
+
+{% load static %}
+
+{% block content %}
+
+    <section id="hero" class="hero section">
+
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+            <div class="hero-content">
+                <div class="row align-items-center">
+
+                    <div class="col-lg-6 hero-text" data-aos="fade-right" data-aos-delay="200">
+                        <div class="hero-badge">
+                            <i class="bi bi-star-fill"></i>
+                            <span>Premium Properties</span>
+                        </div>
+                        <h1>Discover Your Perfect Home in the Heart of the City</h1>
+                        <p>Your journey to a new home starts here. Discover premium properties for sale and rent, 
+                            tailored to fit your lifestyle and budget. Search, filter, and find your perfect 
+                            space today. Whether you're looking to buy your forever home or rent a modern 
+                            city apartment, we've got you covered. Explore thousands of verified listings from trusted
+                            agents.</p>
+
+                        <div class="search-form" data-aos="fade-up" data-aos-delay="300">
+                            <form action="{% url 'property_list' %}" method="get">
+                                <div class="row g-3">
+                                    <div class="col-12">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control" id="location" name="city"
+                                                   required="">
+                                            <label for="location">Location <span style="color: #aaa;">*</span></label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+    <div class="form-floating">
+        <select class="form-select" id="listing-type" name="listing_type">
+            <option value="">All (Rent & Sale)</option>
+            <option value="rent">For Rent</option>
+            <option value="sale">For Sale</option>
+        </select>
+        <label for="listing-type">Listing Status</label>
+    </div>
+</div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-floating">
+                                            <select class="form-select" id="property-type" name="property_type"
+                                                    required="">
+                                                <option value="apartment">Apartment</option>
+                                                <option value="commercial">Commercial</option>
+                                                <option value="house">House</option>
+                                                <option value="land">Land</option>
+                                                <option value="studio">Studio</option>
+                                                <option value="villa">Villa</option>
+                                            </select>
+                                            <label for="property-type">Property Type <span style="color: #aaa;">*</span></label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-floating">
+                                            <select class="form-select" id="price-range" name="price_range" required="">
+                                                <option value="">Price Range</option>
+                                                <option value="0-200000">Under $200K</option>
+                                                <option value="200000-500000">$200K - $500K</option>
+                                                <option value="500000-800000">$500K - $800K</option>
+                                                <option value="800000-1200000">$800K - $1.2M</option>
+                                                <option value="1200000+">Above $1.2M</option>
+                                            </select>
+                                            <label for="price-range">Price Range <span style="color: #aaa;">*</span></label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-floating">
+                                            <select class="form-select" id="bedrooms" name="bedrooms">
+                                                <option value="">Bedrooms</option>
+                                                <option value="1">1 Bedroom</option>
+                                                <option value="2">2 Bedrooms</option>
+                                                <option value="3">3 Bedrooms</option>
+                                                <option value="4">4 Bedrooms</option>
+                                                <option value="5+">5+ Bedrooms</option>
+                                            </select>
+                                            <label for="bedrooms">Bedrooms</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-floating">
+                                            <select class="form-select" id="bathrooms" name="bathrooms">
+                                                <option value="">Bathrooms</option>
+                                                <option value="1">1 Bathroom</option>
+                                                <option value="2">2 Bathrooms</option>
+                                                <option value="3">3 Bathrooms</option>
+                                                <option value="4+">4+ Bathrooms</option>
+                                            </select>
+                                            <label for="bathrooms">Bathrooms</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <button type="submit" class="btn btn-search w-100">
+                                            <i class="bi bi-search"></i>
+                                            Search Properties
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="hero-stats" data-aos="fade-up" data-aos-delay="400">
+                            <div class="row">
+                                <div class="col-4">
+                                    <div class="stat-item">
+                                        <h3><span data-purecounter-start="0" data-purecounter-end="2847"
+                                                  data-purecounter-duration="1" class="purecounter"></span>+</h3>
+                                        <p>Properties Listed</p>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="stat-item">
+                                        <h3><span data-purecounter-start="0" data-purecounter-end="156"
+                                                  data-purecounter-duration="1" class="purecounter"></span>+</h3>
+                                        <p>Verified Agents</p>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="stat-item">
+                                        <h3><span data-purecounter-start="0" data-purecounter-end="98"
+                                                  data-purecounter-duration="1" class="purecounter"></span>%</h3>
+                                        <p>Client Satisfaction</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-6 hero-images" data-aos="fade-left" data-aos-delay="400">
+                        <div class="image-stack">
+                            <div class="main-image">
+                                <img src="{% static 'assets/img/real-estate/property-exterior-3.webp' %}"
+                                     alt="Luxury Property" class="img-fluid">
+                                <div class="property-tag">
+                                    <span class="price">$850,000</span>
+                                    <span class="type">Featured</span>
+                                </div>
+                            </div>
+
+                            <div class="secondary-image">
+                                <img src="{% static 'assets/img/real-estate/property-interior-7.webp' %}"
+                                     alt="Property Interior" class="img-fluid">
+                            </div>
+
+                            <div class="floating-card">
+                                <div class="agent-info">
+                                    <img src="{% static 'assets/img/real-estate/agent-4.webp' %}" alt="Agent"
+                                         class="agent-avatar">
+                                    <div class="agent-details">
+                                        <h5>Robert Chen</h5>
+                                        <p>Top Real Estate Agent</p>
+                                        <div class="rating">
+                                            <i class="bi bi-star-fill"></i>
+                                            <i class="bi bi-star-fill"></i>
+                                            <i class="bi bi-star-fill"></i>
+                                            <i class="bi bi-star-fill"></i>
+                                            <i class="bi bi-star-fill"></i>
+                                            <span>4.9 (127 reviews)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+    <section id="home-about" class="home-about section">
+
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+            <div class="row align-items-center gy-5">
+
+                <div class="col-lg-6 order-lg-2" data-aos="fade-left" data-aos-delay="200">
+                    <div class="image-section">
+                        <div class="main-image-wrapper">
+                            <img src="{% static 'assets/img/real-estate/property-exterior-7.webp' %}"
+                                 alt="Premium Property" class="img-fluid main-image">
+                            <div class="floating-card">
+                                <div class="card-content">
+                                    <div class="icon">
+                                        <i class="bi bi-award"></i>
+                                    </div>
+                                    <div class="text">
+                                        <span class="number"><span data-purecounter-start="0" data-purecounter-end="12"
+                                                                   data-purecounter-duration="1"
+                                                                   class="purecounter"></span>+</span>
+                                        <span class="label">Awards Won</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="secondary-images">
+                            <div class="small-image">
+                                <img src="{% static 'assets/img/real-estate/property-interior-8.webp' %}"
+                                     alt="Interior Design" class="img-fluid">
+                            </div>
+                            <div class="small-image">
+                                <img src="{% static 'assets/img/real-estate/agent-3.webp' %}" alt="Expert Agent"
+                                     class="img-fluid">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 order-lg-1" data-aos="fade-right" data-aos-delay="300">
+                    <div class="content-wrapper">
+                        <div class="section-badge">
+                            <i class="bi bi-buildings"></i>
+                            <span>Premium Real Estate</span>
+                        </div>
+
+                        <h2>Transforming Real Estate Dreams Into Reality</h2>
+
+                        <p>With a deep understanding of the local market, NestQuest is dedicated to helping you 
+                            find the perfect place to call home. Whether you are buying your first house or 
+                            looking for a premium rental, we provide the tools and guidance needed to make 
+                            your real estate journey seamless and successful.</p>
+
+                        <div class="stats-grid">
+                            <div class="stat-item" data-aos="zoom-in" data-aos-delay="400">
+                                <div class="stat-number">
+                                    <span data-purecounter-start="0" data-purecounter-end="2800"
+                                          data-purecounter-duration="2" class="purecounter"></span>+
+                                </div>
+                                <div class="stat-label">Properties Listed</div>
+                            </div>
+
+                            <div class="stat-item" data-aos="zoom-in" data-aos-delay="450">
+                                <div class="stat-number">
+                                    <span data-purecounter-start="0" data-purecounter-end="95"
+                                          data-purecounter-duration="1" class="purecounter"></span>%
+                                </div>
+                                <div class="stat-label">Success Rate</div>
+                            </div>
+
+                            <div class="stat-item" data-aos="zoom-in" data-aos-delay="500">
+                                <div class="stat-number">
+                                    <span data-purecounter-start="0" data-purecounter-end="24"
+                                          data-purecounter-duration="1" class="purecounter"></span>/7
+                                </div>
+                                <div class="stat-label">Client Support</div>
+                            </div>
+                        </div>
+
+                        <div class="features-list">
+                            <div class="feature-item">
+                                <i class="bi bi-check-circle"></i>
+                                <span>Expert market analysis and pricing strategies</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="bi bi-check-circle"></i>
+                                <span>Personalized property matching services</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="bi bi-check-circle"></i>
+                                <span>Professional photography and virtual tours</span>
+                            </div>
+                        </div>
+
+                        <div class="cta-wrapper">
+                            <a href="/about/" class="btn-primary">
+                                <span>Learn More About Us</span>
+                                <i class="bi bi-arrow-right-circle"></i>
+                            </a>
+                            <div class="contact-quick">
+                                <i class="bi bi-headset"></i>
+                                <div class="contact-text">
+                                    <span>Need assistance?</span>
+                                    <a href="tel:+38921234567">+389 2 123 456</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+    
+    <section id="featured-properties" class="featured-properties section">
+
+    <div class="container section-title" data-aos="fade-up">
+        <h2>Featured Properties</h2>
+        <p>Explore our top-rated listings, from luxury suburban family homes to modern urban lofts with breathtaking views.</p>
+    </div>
+
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="grid-featured" data-aos="zoom-in" data-aos-delay="150">
+
+            {% if featured_prop %}
+            <article class="highlight-card">
+                <div class="media">
+                    <div class="badge-set">
+                        <span class="flag featured">Featured</span>
+                        <span class="flag premium">{{ featured_prop.get_property_type_display }}</span>
+                    </div>
+                    <a href="{% url 'property_details' featured_prop.id %}" class="image-link">
+                        {% include "partials/cover_image.html" with property=featured_prop %}
+                    </a>
+                    <div class="quick-specs">
+                        <span><i class="bi bi-door-open"></i> {{ featured_prop.bedrooms }} Beds</span>
+                        <span><i class="bi bi-droplet"></i> {{ featured_prop.bathrooms }} Baths</span>
+                        <span><i class="bi bi-aspect-ratio"></i> {{ featured_prop.area }} m²</span>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="top">
+                        <div>
+                            <h3><a href="{% url 'property_details' featured_prop.id %}">{{ featured_prop.name }}</a></h3>
+                            <div class="loc"><i class="bi bi-geo-alt-fill"></i> {{ featured_prop.city }}</div>
+                        </div>
+                        <div class="price">{{ featured_prop.formatted_price }}</div>
+                    </div>
+                    <p class="excerpt">{{ featured_prop.description|truncatewords:20 }}</p>
+                    <div class="cta">
+                        <a href="{% url 'property_details' featured_prop.id %}" class="btn-main">View Details</a>
+                        <div class="meta">
+                            <span class="status for-sale">{{ featured_prop.get_listing_type_display }}</span>
+                        </div>
+                    </div>
+                </div>
+            </article>
+            {% endif %}
+
+            <div class="mini-list">
+                {% for prop in side_properties %}
+                <article class="mini-card" data-aos="fade-up">
+                    <a href="{% url 'property_details' prop.id %}" class="mini-thumb" style="position:relative;display:block;height:100%;overflow:hidden;">
+                        {% with cover=prop.cover_image %}
+                            {% if cover %}
+                                <img src="{{ cover.image.url }}" alt="{{ prop.name }}" style="width:100%;height:100%;object-fit:cover;display:block;">
+                            {% else %}
+                                <img src="{% static 'assets/img/real-estate/property-exterior-1.webp' %}" alt="{{ prop.name }}" style="width:100%;height:100%;object-fit:cover;display:block;">
+                            {% endif %}
+                        {% endwith %}
+                        <span style="position:absolute;top:10px;left:10px;font-size:10px;font-weight:800;padding:4px 10px;border-radius:14px;color:#fff;background:color-mix(in srgb,#2c7a7b,blue 25%);">{{ prop.get_listing_type_display }}</span>
+                    </a>
+                    <div class="mini-body">
+                        <h4><a href="{% url 'property_details' prop.id %}">{{ prop.name }}</a></h4>
+                        <div class="mini-loc"><i class="bi bi-geo"></i> {{ prop.city }}</div>
+                        <div class="mini-specs">
+                            <span><i class="bi bi-door-open"></i> {{ prop.bedrooms }} Beds</span>
+                            <span><i class="bi bi-rulers"></i> {{ prop.area }} m²</span>
+                        </div>
+                        <div class="mini-foot">
+                            <div class="mini-price">{{ prop.formatted_price }}</div>
+                            <a href="{% url 'property_details' prop.id %}" class="mini-btn">Details</a>
+                        </div>
+                    </div>
+                </article>
+                {% empty %}
+                <p>No additional properties available.</p>
+                {% endfor %}
+            </div>
+
+        </div> <div class="row gy-4 mt-4">
+            {% for prop in bottom_properties %}
+            <div class="col-lg-4" data-aos="fade-up">
+                <article class="stack-card">
+                    <figure class="stack-media">
+                        {% include "partials/cover_image.html" with property=prop %}
+                        <figcaption>
+                            <span class="chip exclusive">{{ prop.get_listing_type_display }}</span>
+                        </figcaption>
+                    </figure>
+                    <div class="stack-body">
+                        <h5><a href="{% url 'property_details' prop.id %}">{{ prop.name }}</a></h5>
+                        <div class="stack-loc"><i class="bi bi-geo-alt"></i> {{ prop.city }}</div>
+                        <ul class="stack-specs">
+                            <li><i class="bi bi-door-open"></i> {{ prop.bedrooms }} Beds</li>
+                            <li><i class="bi bi-aspect-ratio"></i> {{ prop.area }} m²</li>
+                        </ul>
+                        <div class="stack-foot">
+                            <span class="stack-price">{{ prop.formatted_price }}</span>
+                            <a href="{% url 'property_details' prop.id %}" class="stack-link">View</a>
+                        </div>
+                    </div>
+                </article>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</section>
+
+    <section id="testimonials" class="testimonials section light-background">
+
+        <style>
+            #testimonials {
+                position: relative;
+                overflow: hidden;
+            }
+            #testimonials::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background-image:
+                    radial-gradient(ellipse at 15% 60%, rgba(44,122,123,0.07) 0%, transparent 55%),
+                    radial-gradient(ellipse at 85% 20%, rgba(22,53,53,0.05) 0%, transparent 50%);
+                pointer-events: none;
+            }
+
+            .testi-featured {
+                display: flex;
+                align-items: stretch;
+                background: var(--accent-color);
+                border-radius: 20px;
+                overflow: hidden;
+                box-shadow: 0 8px 40px rgba(44,122,123,0.25);
+                margin-bottom: 1.5rem;
+                min-height: 260px;
+                transition: transform 0.35s ease, box-shadow 0.35s ease;
+            }
+            .testi-featured:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 16px 48px rgba(44,122,123,0.32);
+            }
+            .testi-featured-body {
+                flex: 1;
+                padding: 2.5rem 2.75rem;
+                position: relative;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+            .testi-featured-photo {
+                width: 240px;
+                flex-shrink: 0;
+                position: relative;
+                overflow: hidden;
+            }
+            .testi-featured-photo img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                object-position: top center;
+                display: block;
+                filter: brightness(0.92) saturate(0.85);
+            }
+            .testi-featured-photo::after {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background: linear-gradient(to right, var(--accent-color) 0%, transparent 35%);
+            }
+            .testi-deco-quote {
+                font-family: Georgia, serif;
+                font-size: 9rem;
+                line-height: 0.8;
+                color: rgba(255,255,255,0.12);
+                position: absolute;
+                top: 1.25rem;
+                right: 1.75rem;
+                pointer-events: none;
+                user-select: none;
+            }
+            .testi-stars {
+                display: flex;
+                gap: 3px;
+                margin-bottom: 0.85rem;
+            }
+            .testi-stars i { font-size: 0.8rem; }
+            .testi-featured .testi-stars i { color: #f5a623; }
+            .testi-featured-title {
+                font-family: var(--heading-font);
+                font-size: 1.35rem;
+                font-weight: 700;
+                color: #fff;
+                margin-bottom: 0.75rem;
+                line-height: 1.4;
+            }
+            .testi-featured-text {
+                color: rgba(255,255,255,0.82);
+                font-size: 0.93rem;
+                line-height: 1.8;
+                margin-bottom: 1.5rem;
+            }
+            .testi-avatar {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+            }
+            .testi-avatar img {
+                width: 46px;
+                height: 46px;
+                border-radius: 50%;
+                object-fit: cover;
+                object-position: top;
+                border: 2px solid rgba(255,255,255,0.5);
+                flex-shrink: 0;
+            }
+            .testi-avatar-name {
+                font-size: 0.9rem;
+                font-weight: 700;
+                color: #fff;
+                line-height: 1.2;
+            }
+            .testi-avatar-role {
+                font-size: 0.78rem;
+                color: rgba(255,255,255,0.6);
+            }
+
+            .testi-card {
+                background: #fff;
+                border-radius: 16px;
+                padding: 1.75rem 1.75rem 1.5rem;
+                border-left: 4px solid var(--accent-color);
+                box-shadow: 0 2px 18px rgba(44,122,123,0.07);
+                position: relative;
+                overflow: hidden;
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+            .testi-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 12px 36px rgba(44,122,123,0.15);
+            }
+            .testi-card .testi-deco-quote {
+                font-size: 6rem;
+                color: var(--accent-color);
+                opacity: 0.08;
+                top: 0.5rem;
+                right: 1rem;
+            }
+            .testi-card .testi-stars i { color: #f5a623; }
+            .testi-card-title {
+                font-family: var(--heading-font);
+                font-size: 1rem;
+                font-weight: 700;
+                color: var(--heading-color);
+                margin-bottom: 0.6rem;
+                line-height: 1.45;
+            }
+            .testi-card-text {
+                color: #666;
+                font-size: 0.88rem;
+                line-height: 1.78;
+                flex-grow: 1;
+                margin-bottom: 1.25rem;
+            }
+            .testi-card .testi-avatar {
+                padding-top: 1rem;
+                border-top: 1px solid #f0f5f5;
+                margin-top: auto;
+            }
+            .testi-card .testi-avatar img {
+                border-color: var(--accent-color);
+            }
+            .testi-card .testi-avatar-name { color: var(--heading-color); }
+            .testi-card .testi-avatar-role { color: #aaa; }
+
+            @media (max-width: 768px) {
+                .testi-featured { flex-direction: column; }
+                .testi-featured-photo { width: 100%; height: 200px; }
+                .testi-featured-photo::after {
+                    background: linear-gradient(to bottom, var(--accent-color) 0%, transparent 40%);
+                }
+                .testi-featured-body { padding: 1.75rem; }
+                .testi-deco-quote { font-size: 5rem; }
+            }
+        </style>
+
+        <div class="container section-title" data-aos="fade-up">
+            <h2>Testimonials</h2>
+            <p>Hear what our clients have to say about their experiences working with us.</p>
+        </div>
+
+        <div class="container">
+
+            <div class="testi-featured" data-aos="fade-up" data-aos-delay="100">
+                <div class="testi-featured-body">
+                    <div class="testi-deco-quote">"</div>
+                    <div class="testi-stars">
+                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                    </div>
+                    <h3 class="testi-featured-title">We found our dream home in under two weeks</h3>
+                    <p class="testi-featured-text">After months of disappointing viewings through other agencies, a friend recommended NestQuest. The difference was immediate — every listing had verified photos, accurate floor plans, and an honest description. Our dedicated agent understood exactly what we needed and shortlisted properties that actually matched our criteria. We signed the contract on a beautiful family home within 12 days. I genuinely cannot recommend NestQuest enough.</p>
+                    <div class="testi-avatar">
+                        <img src="{% static 'assets/img/person/person-m-7.webp' %}" alt="Daniel Marsh">
+                        <div>
+                            <div class="testi-avatar-name">Daniel Marsh</div>
+                            <div class="testi-avatar-role">First-Time Home Buyer</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testi-featured-photo d-none d-md-block">
+                    <img src="{% static 'assets/img/person/person-m-7.webp' %}" alt="Daniel Marsh">
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="150">
+                    <div class="testi-card">
+                        <div class="testi-deco-quote">"</div>
+                        <div class="testi-stars mb-2">
+                            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                        </div>
+                        <h5 class="testi-card-title">Renting has never been this stress-free</h5>
+                        <p class="testi-card-text">I relocated for work and needed an apartment quickly. NestQuest's filters let me narrow down by neighbourhood, budget, and move-in date in minutes. The detailed descriptions and high-quality photos gave me a real feel for each place before I even scheduled a viewing. I found a great apartment and signed the lease remotely. Incredibly smooth from start to finish.</p>
+                        <div class="testi-avatar">
+                            <img src="{% static 'assets/img/person/person-f-8.webp' %}" alt="Laura Petersen">
+                            <div>
+                                <div class="testi-avatar-name">Laura Petersen</div>
+                                <div class="testi-avatar-role">Renter</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="250">
+                    <div class="testi-card">
+                        <div class="testi-deco-quote">"</div>
+                        <div class="testi-stars mb-2">
+                            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                        </div>
+                        <h5 class="testi-card-title">Sold at asking price with zero headaches</h5>
+                        <p class="testi-card-text">I listed my property on NestQuest after struggling on other platforms for months. Within days I had serious inquiries — not tyre-kickers. The team handled everything professionally: pricing advice, photography, and negotiation support. My apartment sold at full asking price in three weeks. The transparency throughout the process gave me complete peace of mind.</p>
+                        <div class="testi-avatar">
+                            <img src="{% static 'assets/img/person/person-m-9.webp' %}" alt="Marcus Webb">
+                            <div>
+                                <div class="testi-avatar-name">Marcus Webb</div>
+                                <div class="testi-avatar-role">Property Seller</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="350">
+                    <div class="testi-card">
+                        <div class="testi-deco-quote">"</div>
+                        <div class="testi-stars mb-2">
+                            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                        </div>
+                        <h5 class="testi-card-title">My go-to platform for investment properties</h5>
+                        <p class="testi-card-text">As a real estate investor I need reliable data fast. NestQuest delivers — every listing is verified, price history is clear, and the search filters are granular enough to target exactly the yield range I'm looking for. I've acquired three buy-to-let properties through the platform in the past year and the process gets smoother every time.</p>
+                        <div class="testi-avatar">
+                            <img src="{% static 'assets/img/person/person-f-10.webp' %}" alt="Sofia Andersen">
+                            <div>
+                                <div class="testi-avatar-name">Sofia Andersen</div>
+                                <div class="testi-avatar-role">Property Investor</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+    <section id="why-us" class="why-us section">
+
+        <div class="container section-title" data-aos="fade-up">
+            <h2>Why Us</h2>
+            <p>We combine deep market expertise with innovative technology to make your property search effortless.</p>
+        </div>
+
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+            <div class="row align-items-center gy-5">
+
+                <div class="col-lg-5" data-aos="fade-right" data-aos-delay="200">
+                    <div class="image-showcase">
+                        <div class="main-image-wrapper">
+                            <img src="{% static 'assets/img/real-estate/property-exterior-3.webp' %}"
+                                 alt="Premium Property" class="img-fluid main-image">
+                        </div>
+
+                        <div class="floating-stats">
+                            <div class="stat-badge">
+                                <span class="stat-number">15+</span>
+                                <span class="stat-text">Years Excellence</span>
+                            </div>
+                            <div class="stat-badge">
+                                <span class="stat-number">3.2K</span>
+                                <span class="stat-text">Happy Clients</span>
+                            </div>
+                        </div>
+
+                        <div class="experience-card">
+                            <div class="card-icon">
+                                <i class="bi bi-gem"></i>
+                            </div>
+                            <div class="card-content">
+                                <h5>Premier Service</h5>
+                                <p>Luxury real estate expertise since 2009</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-7" data-aos="fade-left" data-aos-delay="300">
+                    <div class="content-wrapper">
+                        <div class="section-badge">
+                            <i class="bi bi-star-fill me-2"></i>
+                            Why Elite Properties
+                        </div>
+
+                        <h2>Your Gateway to Exceptional Real Estate Experiences</h2>
+                        <p class="lead-text">At Elite Properties, we believe that finding a home is more than just a 
+                            transaction—it's a journey toward your future. Our mission is to provide a transparent, 
+                            data-driven, and highly personalized experience that puts your needs first, ensuring you 
+                            find the space where you truly belong.</p>
+                        
+
+                        <div class="benefits-grid">
+                            <div class="benefit-item" data-aos="fade-up" data-aos-delay="400">
+                                <div class="benefit-icon">
+                                    <i class="bi bi-geo-alt-fill"></i>
+                                </div>
+                                <div class="benefit-content">
+                                    <h4>Prime Locations</h4>
+                                    <p>Gain exclusive access to the most sought-after neighborhoods, from vibrant city centers to quiet suburban escapes.</p>
+                                </div>
+                            </div>
+
+                            <div class="benefit-item" data-aos="fade-up" data-aos-delay="450">
+                                <div class="benefit-icon">
+                                    <i class="bi bi-shield-fill-check"></i>
+                                </div>
+                                <div class="benefit-content">
+                                    <h4>Guaranteed Results</h4>
+                                    <p>Our commitment to excellence ensures a smooth process from the first click to the final handshake, 
+                                        with satisfaction at every step.</p>
+                                </div>
+                            </div>
+
+                            <div class="benefit-item" data-aos="fade-up" data-aos-delay="500">
+                                <div class="benefit-icon">
+                                    <i class="bi bi-clock-fill"></i>
+                                </div>
+                                <div class="benefit-content">
+                                    <h4>Fast Processing</h4>
+                                    <p>Streamlined processes and expert negotiation to close deals efficiently.</p>
+                                </div>
+                            </div>
+
+                            <div class="benefit-item" data-aos="fade-up" data-aos-delay="550">
+                                <div class="benefit-icon">
+                                    <i class="bi bi-people-fill"></i>
+                                </div>
+                                <div class="benefit-content">
+                                    <h4>Expert Team</h4>
+                                    <p>Certified professionals with deep market knowledge and client dedication.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="achievement-highlights" data-aos="fade-up" data-aos-delay="600">
+                            <div class="highlight-item">
+                                <span class="highlight-number purecounter" data-purecounter-start="0"
+                                      data-purecounter-end="94" data-purecounter-duration="2"></span>%
+                                <span class="highlight-label">Success Rate</span>
+                            </div>
+                            <div class="highlight-divider"></div>
+                            <div class="highlight-item">
+                                <span class="highlight-number purecounter" data-purecounter-start="0"
+                                      data-purecounter-end="1800" data-purecounter-duration="2"></span>+
+                                <span class="highlight-label">Properties Sold</span>
+                            </div>
+                            <div class="highlight-divider"></div>
+                            <div class="highlight-item">
+                                <span class="highlight-number purecounter" data-purecounter-start="0"
+                                      data-purecounter-end="24" data-purecounter-duration="2"></span>/7
+                                <span class="highlight-label">Support Available</span>
+                            </div>
+                        </div>
+
+                        <div class="action-buttons" data-aos="fade-up" data-aos-delay="650">
+                            <a href="{% url 'property_list' %}" class="btn btn-primary">Explore Properties</a>
+                            <a href="/contact" class="btn btn-outline">Schedule Consultation</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    {% if blog_posts %}
+    <section id="recent-blog-posts" class="recent-blog-posts section">
+
+        <div class="container section-title" data-aos="fade-up">
+            <h2>Recent Blog Posts</h2>
+            <p>Stay informed with the latest real estate news, expert buying tips, and market insights to help you make the best property decisions.</p>
+        </div>
+
+        <div class="container">
+
+            <div class="row gy-5">
+
+                {% for post in blog_posts %}
+                <div class="col-xl-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ forloop.counter }}00">
+                    <div class="post-item position-relative h-100">
+
+                        <div class="post-img position-relative overflow-hidden">
+                            <img src="{{ post.image.url }}" class="img-fluid" alt="{{ post.title }}">
+                            <span class="post-date">{{ post.date|date:"F j" }}</span>
+                        </div>
+
+                        <div class="post-content d-flex flex-column">
+                            <h3 class="post-title">{{ post.title }}</h3>
+                            <a href="{% url 'blog_detail' slug=post.slug %}" class="readmore stretched-link"><span>Read More</span><i
+                                    class="bi bi-arrow-right"></i></a>
+                        </div>
+
+                    </div>
+                </div>
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </section>
+    {% endif %}
+
+    <section class="call-to-action-2 call-to-action section light-background" id="call-to-action">
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+            <div class="row align-items-center">
+                <div class="col-lg-6 order-2 order-lg-1" data-aos="fade-right" data-aos-delay="200">
+
+                    <div class="cta-content">
+                        <div class="section-badge">Your Property Journey Starts Here</div>
+                        <h2>Ready to Find Your Perfect Investment?</h2>
+                        <p>Whether you are looking for your first home or your next high-yield investment, 
+                            our team of experts is here to guide you every step of the way. We simplify the 
+                            complexity of real estate so you can focus on building your future.</p>
+
+                        <div class="benefits-list">
+                            <div class="benefit-item" data-aos="fade-up" data-aos-delay="300">
+                                <i class="bi bi-check-circle-fill"></i>
+                                <span>Expert market analysis and insights</span>
+                            </div>
+                            <div class="benefit-item" data-aos="fade-up" data-aos-delay="350">
+                                <i class="bi bi-check-circle-fill"></i>
+                                <span>Personalized property recommendations</span>
+                            </div>
+                            <div class="benefit-item" data-aos="fade-up" data-aos-delay="400">
+                                <i class="bi bi-check-circle-fill"></i>
+                                <span>End-to-end transaction support</span>
+                            </div>
+                        </div>
+
+                        <div class="cta-actions">
+                            <a href="/contact/" class="btn btn-secondary">
+                                <i class="bi bi-telephone-fill"></i>
+                                Contact Us Here
+                            </a>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-lg-6 order-1 order-lg-2" data-aos="fade-left" data-aos-delay="250">
+
+                    <div class="cta-visual">
+                        <div class="main-image">
+                            <img src="{% static 'assets/img/real-estate/property-exterior-5.webp' %}"
+                                 alt="Property Investment" class="img-fluid">
+                            <div class="overlay-badge">
+                                <i class="bi bi-star-fill"></i>
+                                <span>Trusted by 500+ Clients</span>
+                            </div>
+                        </div>
+
+                        <div class="floating-stats">
+                            <div class="stat-card" data-aos="zoom-in" data-aos-delay="450">
+                                <div class="stat-icon">
+                                    <i class="bi bi-house-heart-fill"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <span class="stat-number">850+</span>
+                                    <span class="stat-label">Properties Sold</span>
+                                </div>
+                            </div>
+
+                            <div class="stat-card" data-aos="zoom-in" data-aos-delay="500">
+                                <div class="stat-icon">
+                                    <i class="bi bi-trophy-fill"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <span class="stat-number">15</span>
+                                    <span class="stat-label">Years Experience</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+{% endblock %}
+
+
+
+
+
+

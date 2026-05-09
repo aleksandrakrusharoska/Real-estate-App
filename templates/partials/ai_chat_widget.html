@@ -1,0 +1,311 @@
+{% load static %}
+
+<button id="aiChatToggle" aria-label="Open property assistant"
+        style="position:fixed;bottom:24px;right:24px;z-index:1050;
+               width:56px;height:56px;border-radius:50%;border:none;
+               background:#2c7a7b;color:#fff;font-size:22px;
+               box-shadow:0 4px 16px rgba(0,0,0,0.25);cursor:pointer;
+               display:flex;align-items:center;justify-content:center;
+               transition:background 0.2s;">
+    <i class="bi bi-chat-dots-fill"></i>
+</button>
+
+<div id="aiChatPopup"
+     style="display:none;position:fixed;bottom:92px;right:24px;z-index:1050;
+            width:360px;height:520px;background:#fff;border-radius:16px;
+            box-shadow:0 8px 32px rgba(0,0,0,0.18);
+            flex-direction:column;overflow:hidden;">
+
+    <div style="background:#2c7a7b;padding:14px 16px;display:flex;
+                align-items:center;gap:12px;flex-shrink:0;">
+        <div style="width:36px;height:36px;border-radius:50%;background:#fff;
+                    display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <i class="bi bi-house-fill" style="color:#2c7a7b;font-size:16px;"></i>
+        </div>
+        <div style="flex:1;">
+            <div style="color:#fff;font-weight:600;font-size:14px;line-height:1.2;">Property Assistant</div>
+            <div style="color:rgba(255,255,255,0.8);font-size:11px;">Powered by AI</div>
+        </div>
+        <button id="aiChatClear" aria-label="Clear conversation" title="Clear conversation"
+                style="background:none;border:none;color:rgba(255,255,255,0.7);font-size:14px;
+                       cursor:pointer;padding:0;line-height:1;margin-right:4px;">
+            <i class="bi bi-trash"></i>
+        </button>
+        <button id="aiChatClose" aria-label="Close"
+                style="background:none;border:none;color:#fff;font-size:18px;
+                       cursor:pointer;padding:0;line-height:1;">
+            <i class="bi bi-x-lg"></i>
+        </button>
+    </div>
+
+    <div id="aiChatMessages"
+         style="flex:1;overflow-y:auto;padding:16px;display:flex;
+                flex-direction:column;gap:12px;background:#f8f9fa;">
+    </div>
+
+    <div style="padding:12px;border-top:1px solid #e9ecef;background:#fff;flex-shrink:0;">
+        <div style="display:flex;gap:8px;align-items:center;">
+            <input id="aiChatInput" type="text" placeholder="Write your message..."
+                   style="flex:1;border:1px solid #dee2e6;border-radius:20px;
+                          padding:8px 14px;font-size:13px;outline:none;
+                          transition:border-color 0.2s;"
+                   autocomplete="off">
+            <button id="aiChatSend"
+                    style="width:38px;height:38px;border-radius:50%;border:none;
+                           background:#2c7a7b;color:#fff;font-size:15px;
+                           cursor:pointer;display:flex;align-items:center;
+                           justify-content:center;flex-shrink:0;">
+                <i class="bi bi-send-fill"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+(function () {
+    const toggle = document.getElementById('aiChatToggle');
+    const popup  = document.getElementById('aiChatPopup');
+    const close  = document.getElementById('aiChatClose');
+    const clearBtn = document.getElementById('aiChatClear');
+    const input  = document.getElementById('aiChatInput');
+    const send   = document.getElementById('aiChatSend');
+    const msgs   = document.getElementById('aiChatMessages');
+
+    const WELCOME = 'Hi! Tell me what you\'re looking for — city, price range, bedrooms, sale or rent. You can also ask me to compare two properties by name or ID (e.g. "compare #12 and #15").';
+
+    function openChat()  { popup.style.display = 'flex'; input.focus(); }
+    function closeChat() { popup.style.display = 'none'; }
+
+    toggle.addEventListener('click', () =>
+        popup.style.display === 'flex' ? closeChat() : openChat()
+    );
+    close.addEventListener('click', closeChat);
+
+    function getCsrf() {
+        const cookie = document.cookie.split(';').find(c => c.trim().startsWith('csrftoken='));
+        return cookie ? cookie.trim().split('=')[1] : '';
+    }
+
+    function scrollToBottom() { msgs.scrollTop = msgs.scrollHeight; }
+
+    function escapeHtml(str) {
+        if (str == null) return '';
+        return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;');
+    }
+
+    function renderMarkdown(str) {
+        if (str == null) return '';
+        return escapeHtml(str)
+            .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\n\n/g, '</p><p style="margin:6px 0 0;">')
+            .replace(/\n/g, '<br>');
+    }
+
+    function addWelcomeBubble() {
+        const div = document.createElement('div');
+        div.className = 'ai-msg';
+        div.style.cssText = 'display:flex;gap:8px;align-items:flex-start;';
+        div.innerHTML = `
+            <div style="width:28px;height:28px;border-radius:50%;background:#2c7a7b;
+                        display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">
+                <i class="bi bi-house-fill" style="color:#fff;font-size:11px;"></i>
+            </div>
+            <div style="background:#fff;border-radius:12px 12px 12px 2px;
+                        padding:10px 14px;max-width:260px;font-size:13px;
+                        box-shadow:0 1px 4px rgba(0,0,0,0.08);line-height:1.5;">
+                ${escapeHtml(WELCOME)}
+            </div>`;
+        msgs.appendChild(div);
+    }
+
+    function addUserBubble(text) {
+        const div = document.createElement('div');
+        div.style.cssText = 'display:flex;justify-content:flex-end;';
+        div.innerHTML = `
+            <div style="background:#2c7a7b;color:#fff;border-radius:12px 12px 2px 12px;
+                        padding:10px 14px;max-width:260px;font-size:13px;line-height:1.5;">
+                ${escapeHtml(text)}
+            </div>`;
+        msgs.appendChild(div);
+        scrollToBottom();
+    }
+
+    function addAiBubble(text, properties, mode) {
+        const wrapper = document.createElement('div');
+        wrapper.style.cssText = 'display:flex;gap:8px;align-items:flex-start;flex-direction:column;';
+
+        const row = document.createElement('div');
+        row.style.cssText = 'display:flex;gap:8px;align-items:flex-start;';
+        const bodyHtml = mode === 'compare'
+            ? `<p style="margin:0;">${renderMarkdown(text)}</p>`
+            : escapeHtml(text);
+        row.innerHTML = `
+            <div style="width:28px;height:28px;border-radius:50%;background:#2c7a7b;
+                        display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">
+                <i class="bi bi-house-fill" style="color:#fff;font-size:11px;"></i>
+            </div>
+            <div style="background:#fff;border-radius:12px 12px 12px 2px;
+                        padding:10px 14px;max-width:260px;font-size:13px;
+                        box-shadow:0 1px 4px rgba(0,0,0,0.08);line-height:1.5;">
+                ${bodyHtml}
+            </div>`;
+        wrapper.appendChild(row);
+
+        if (mode !== 'compare' && properties && properties.length > 0) {
+            const cards = document.createElement('div');
+            cards.style.cssText = 'padding-left:36px;display:flex;flex-direction:column;gap:8px;width:100%;';
+            properties.forEach(p => {
+                const card = document.createElement('a');
+                card.href = p.detail_url;
+                card.target = '_blank';
+                card.style.cssText = 'display:flex;gap:10px;background:#fff;border-radius:10px;' +
+                    'overflow:hidden;box-shadow:0 1px 6px rgba(0,0,0,0.1);text-decoration:none;' +
+                    'color:inherit;transition:box-shadow 0.2s;';
+                const isRent = p.listing_type_raw === 'rent';
+                card.innerHTML = `
+                    <div style="width:72px;height:72px;flex-shrink:0;overflow:hidden;background:#e9ecef;">
+                        ${p.cover_image_url
+                            ? `<img src="${escapeHtml(p.cover_image_url)}" alt="${escapeHtml(p.name)}"
+                                    style="width:100%;height:100%;object-fit:cover;">`
+                            : `<div style="width:100%;height:100%;display:flex;align-items:center;
+                                           justify-content:center;color:#adb5bd;font-size:20px;">
+                                   <i class="bi bi-house"></i>
+                               </div>`}
+                    </div>
+                    <div style="padding:8px 8px 8px 0;flex:1;min-width:0;">
+                        <div style="font-weight:600;font-size:12px;white-space:nowrap;
+                                    overflow:hidden;text-overflow:ellipsis;color:#212529;">
+                            ${escapeHtml(p.name)}
+                        </div>
+                        <div style="font-size:11px;color:#6c757d;margin-top:2px;">
+                            <i class="bi bi-geo-alt" style="font-size:10px;"></i> ${escapeHtml(p.city)}
+                        </div>
+                        <div style="font-size:12px;font-weight:700;color:#2c7a7b;margin-top:4px;">
+                            $${parseInt(p.price).toLocaleString('en-US')}${isRent ? '/month' : ''}
+                        </div>
+                        <div style="font-size:10px;color:#6c757d;margin-top:2px;">
+                            ${p.bedrooms ? p.bedrooms + ' bed · ' : ''}${escapeHtml(p.property_type)} · ${escapeHtml(p.listing_type)}
+                        </div>
+                    </div>`;
+                cards.appendChild(card);
+            });
+            wrapper.appendChild(cards);
+        } else if (mode === 'filter' && properties && properties.length === 0) {
+            const none = document.createElement('div');
+            none.style.cssText = 'padding-left:36px;font-size:12px;color:#6c757d;';
+            none.textContent = 'No properties matched those criteria.';
+            wrapper.appendChild(none);
+        }
+
+        msgs.appendChild(wrapper);
+        scrollToBottom();
+    }
+
+    function addTypingIndicator() {
+        const div = document.createElement('div');
+        div.id = 'aiTyping';
+        div.style.cssText = 'display:flex;gap:8px;align-items:center;';
+        div.innerHTML = `
+            <div style="width:28px;height:28px;border-radius:50%;background:#2c7a7b;
+                        display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <i class="bi bi-house-fill" style="color:#fff;font-size:11px;"></i>
+            </div>
+            <div style="background:#fff;border-radius:12px;padding:10px 16px;
+                        box-shadow:0 1px 4px rgba(0,0,0,0.08);">
+                <span style="display:inline-flex;gap:4px;align-items:center;">
+                    <span style="width:6px;height:6px;border-radius:50%;background:#adb5bd;
+                                 animation:aiDot 1.2s infinite;"></span>
+                    <span style="width:6px;height:6px;border-radius:50%;background:#adb5bd;
+                                 animation:aiDot 1.2s 0.4s infinite;"></span>
+                    <span style="width:6px;height:6px;border-radius:50%;background:#adb5bd;
+                                 animation:aiDot 1.2s 0.8s infinite;"></span>
+                </span>
+            </div>`;
+        msgs.appendChild(div);
+        scrollToBottom();
+        return div;
+    }
+
+    async function loadHistory() {
+        try {
+            const res = await fetch('{% url "ai_chat_history" %}');
+            const data = await res.json();
+            if (!data.messages || data.messages.length === 0) {
+                addWelcomeBubble();
+                return;
+            }
+            data.messages.forEach(msg => {
+                if (msg.role === 'user') {
+                    addUserBubble(msg.content);
+                } else {
+                    addAiBubble(msg.content, msg.properties || [], msg.mode || 'filter');
+                }
+            });
+        } catch (e) {
+            addWelcomeBubble();
+        }
+    }
+
+    async function clearConversation() {
+        try {
+            await fetch('{% url "ai_chat_clear" %}', {
+                method: 'POST',
+                headers: { 'X-CSRFToken': getCsrf() },
+            });
+        } catch (e) { /* ignore network errors */ }
+        msgs.innerHTML = '';
+        addWelcomeBubble();
+    }
+
+    clearBtn.addEventListener('click', clearConversation);
+
+    async function sendMessage() {
+        const text = input.value.trim();
+        if (!text) return;
+        input.value = '';
+        send.disabled = true;
+
+        addUserBubble(text);
+        const typing = addTypingIndicator();
+
+        try {
+            const res = await fetch('{% url "ai_chat" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCsrf(),
+                },
+                body: JSON.stringify({message: text}),
+            });
+            const data = await res.json();
+            typing.remove();
+            addAiBubble(data.message, data.properties, data.mode);
+        } catch (err) {
+            typing.remove();
+            addAiBubble('Sorry, something went wrong. Please try again.', null, 'filter');
+        } finally {
+            send.disabled = false;
+            input.focus();
+        }
+    }
+
+    send.addEventListener('click', sendMessage);
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') sendMessage(); });
+
+    document.addEventListener('DOMContentLoaded', clearConversation);
+})();
+</script>
+
+<style>
+@keyframes aiDot {
+    0%, 80%, 100% { opacity: 0.3; transform: scale(0.8); }
+    40% { opacity: 1; transform: scale(1); }
+}
+#aiChatInput:focus { border-color: #2c7a7b; }
+#aiChatToggle:hover { background: color-mix(in srgb, #2c7a7b 80%, white 20%) !important; }
+#aiChatClear:hover { color: #fff !important; }
+</style>

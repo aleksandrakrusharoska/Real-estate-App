@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block title %}{{ post.title }} — NestQuest{% endblock %}
+{% block body_class %}inner-page{% endblock %}
+
+{% load static blog_extras %}
+
+{% block content %}
+
+<div class="page-title">
+    <div class="heading">
+        <div class="container">
+            <div class="row d-flex justify-content-center text-center">
+                <div class="col-lg-8">
+                    <h1 class="heading-title">{{ post.title }}</h1>
+                    <p class="mb-0">{{ post.excerpt }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <nav class="breadcrumbs">
+        <div class="container">
+            <ol>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li class="current">Blog</li>
+            </ol>
+        </div>
+    </nav>
+</div>
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-9">
+
+            <img src="{{ post.image.url }}" class="img-fluid rounded mb-4 w-100" alt="{{ post.title }}" style="max-height: 500px; object-fit: cover;">
+
+            <p class="text-muted mb-4">
+                <i class="bi bi-calendar3 me-1"></i> {{ post.date|date:"F j, Y" }}
+            </p>
+
+            <div class="blog-content">
+                {{ post.content|format_blog }}
+            </div>
+
+            <style>
+                .blog-content .lead {
+                    font-size: 1.15rem;
+                    line-height: 1.85;
+                    color: #444;
+                    border-left: 4px solid var(--accent-color, #2d6a4f);
+                    padding-left: 1.25rem;
+                    margin-bottom: 2rem;
+                }
+                .blog-section {
+                    display: flex;
+                    gap: 1.25rem;
+                    align-items: flex-start;
+                    background: #f8f9fa;
+                    border-radius: 10px;
+                    padding: 1.25rem 1.5rem;
+                    margin-bottom: 1rem;
+                    transition: box-shadow 0.2s;
+                }
+                .blog-section:hover {
+                    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+                }
+                .blog-section-icon {
+                    flex-shrink: 0;
+                    width: 42px;
+                    height: 42px;
+                    background: var(--accent-color, #2d6a4f);
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+                .blog-section-icon i {
+                    color: #fff;
+                    font-size: 1.1rem;
+                }
+                .blog-section h5 {
+                    font-size: 1rem;
+                    font-weight: 700;
+                    margin-bottom: 0.35rem;
+                    color: #1a1a2e;
+                }
+                .blog-section p {
+                    margin: 0;
+                    color: #555;
+                    line-height: 1.75;
+                }
+            </style>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

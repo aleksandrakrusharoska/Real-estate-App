@@ -1,0 +1,553 @@
+{% extends "base.html" %}
+{% block title %}Contact Us — NestQuest{% endblock %}
+{% block body_class %}inner-page{% endblock %}
+
+{% load static %}
+
+{% block content %}
+
+<style>
+  #contact .contact-info-panel {
+    background: var(--surface-color);
+    border: 1px solid color-mix(in srgb, var(--default-color), transparent 82%);
+    border-radius: 20px;
+    padding: 2.5rem 2rem;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+
+#contact .section-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(135deg, var(--accent-color), color-mix(in srgb, var(--accent-color), black 15%));
+    color: var(--contrast-color);
+    padding: 0.6rem 1.25rem;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 1.25rem;
+  }
+
+  #contact .contact-info-panel h2 {
+    font-size: 1.9rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 0.6rem;
+  }
+
+  #contact .contact-info-panel .lead-text {
+    font-size: 0.95rem;
+    color: color-mix(in srgb, var(--default-color), transparent 30%);
+    margin-bottom: 2rem;
+    line-height: 1.6;
+  }
+
+  #contact .contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    padding: 1rem 1.1rem;
+    background: var(--surface-color);
+    border-radius: 14px;
+    border: 1px solid color-mix(in srgb, var(--default-color), transparent 82%);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  #contact .contact-item:last-of-type {
+    margin-bottom: 0;
+  }
+
+  #contact .contact-item:hover {
+    transform: translateX(4px);
+    box-shadow: 0 4px 14px color-mix(in srgb, var(--default-color), transparent 88%);
+  }
+
+  #contact .contact-item .ci-icon {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    background: color-mix(in srgb, var(--default-color), transparent 92%);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-color);
+    font-size: 1.15rem;
+    transition: background 0.25s ease, color 0.25s ease;
+  }
+
+  #contact .contact-item:hover .ci-icon {
+    background: color-mix(in srgb, var(--default-color), transparent 86%);
+    color: var(--accent-color);
+  }
+
+  #contact .contact-item .ci-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent-color);
+    margin-bottom: 0.2rem;
+  }
+
+  #contact .contact-item .ci-value {
+    font-size: 0.9rem;
+    color: var(--default-color);
+    font-weight: 500;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  #contact .divider {
+    border: none;
+    border-top: 1px solid color-mix(in srgb, var(--default-color), transparent 82%);
+    margin: 1.75rem 0;
+  }
+
+  #contact .follow-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--default-color), transparent 40%);
+    margin-bottom: 0.85rem;
+  }
+
+  #contact .social-links {
+    display: flex;
+    gap: 0.6rem;
+  }
+
+  #contact .social-links a {
+    width: 40px;
+    height: 40px;
+    background-color: transparent;
+    color: var(--accent-color);
+    border: 1.5px solid color-mix(in srgb, var(--accent-color), transparent 55%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    font-size: 15px;
+    transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+    text-decoration: none;
+  }
+
+  #contact .social-links a:hover {
+    background: linear-gradient(135deg, var(--accent-color), color-mix(in srgb, var(--accent-color), black 15%));
+    color: var(--contrast-color);
+    border-color: transparent;
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px color-mix(in srgb, var(--accent-color), transparent 55%);
+  }
+
+  #contact .form-card {
+    background: var(--surface-color);
+    border: 1px solid color-mix(in srgb, var(--default-color), transparent 82%);
+    border-radius: 20px;
+    padding: 2.5rem 2rem;
+    height: 100%;
+  }
+
+  #contact .form-card h2 {
+    font-size: 1.9rem;
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+  }
+
+  #contact .form-card .form-sub {
+    font-size: 0.95rem;
+    color: color-mix(in srgb, var(--default-color), transparent 35%);
+    margin-bottom: 1.75rem;
+    line-height: 1.6;
+  }
+
+  #contact .form-card .form-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--default-color), transparent 30%);
+    margin-bottom: 0.4rem;
+  }
+
+  #contact .form-card .form-control,
+  #contact .form-card .form-select {
+    color: var(--default-color);
+    background-color: color-mix(in srgb, var(--accent-color), transparent 97%);
+    border: 1px solid color-mix(in srgb, var(--default-color), transparent 85%);
+    border-radius: 10px;
+    font-size: 0.9rem;
+    height: 52px;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    accent-color: var(--accent-color);
+  }
+
+  #contact .custom-select-wrap {
+    position: relative;
+  }
+
+  #contact .custom-select-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 52px;
+    padding: 0 14px;
+    background-color: color-mix(in srgb, var(--accent-color), transparent 97%);
+    border: 1px solid color-mix(in srgb, var(--default-color), transparent 85%);
+    border-radius: 10px;
+    font-size: 0.9rem;
+    color: color-mix(in srgb, var(--default-color), transparent 60%);
+    cursor: pointer;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    user-select: none;
+  }
+
+  #contact .custom-select-trigger.has-value {
+    color: var(--default-color);
+  }
+
+  #contact .custom-select-trigger.open,
+  #contact .custom-select-trigger:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color), transparent 85%);
+    background-color: var(--surface-color);
+    outline: none;
+  }
+
+  #contact .custom-select-trigger .cs-arrow {
+    font-size: 0.8rem;
+    color: color-mix(in srgb, var(--default-color), transparent 50%);
+    transition: transform 0.25s ease;
+    flex-shrink: 0;
+  }
+
+  #contact .custom-select-trigger.open .cs-arrow {
+    transform: rotate(180deg);
+  }
+
+  #contact .custom-select-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    background: var(--surface-color);
+    border: 1px solid color-mix(in srgb, var(--accent-color), transparent 75%);
+    border-radius: 10px;
+    box-shadow: 0 8px 24px color-mix(in srgb, var(--accent-color), transparent 85%);
+    z-index: 200;
+    overflow: hidden;
+  }
+
+  #contact .custom-select-dropdown.open {
+    display: block;
+  }
+
+  #contact .custom-option {
+    padding: 11px 14px;
+    font-size: 0.9rem;
+    color: var(--default-color);
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+
+  #contact .custom-option:hover {
+    background: var(--accent-color);
+    color: var(--contrast-color);
+  }
+
+  #contact .custom-option.selected {
+    background: color-mix(in srgb, var(--accent-color), transparent 88%);
+    color: var(--accent-color);
+    font-weight: 600;
+  }
+
+  #contact .custom-option.placeholder-opt {
+    color: color-mix(in srgb, var(--default-color), transparent 50%);
+  }
+
+  #contact .form-card textarea.form-control {
+    height: auto;
+    resize: vertical;
+  }
+
+  #contact .form-card .form-control:focus,
+  #contact .form-card .form-select:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color), transparent 85%);
+    background-color: var(--surface-color);
+    outline: none;
+  }
+
+  #contact .form-card .form-control::placeholder {
+    color: color-mix(in srgb, var(--default-color), transparent 60%);
+    font-size: 0.88rem;
+  }
+
+  #contact .btn-send {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.65rem;
+    background: var(--accent-color);
+    color: var(--contrast-color);
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    width: 100%;
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 10px 30px color-mix(in srgb, var(--accent-color), transparent 70%);
+    cursor: pointer;
+  }
+
+  #contact .btn-send:hover {
+    background: color-mix(in srgb, var(--accent-color), black 12%);
+    transform: translateY(-2px);
+    box-shadow: 0 15px 40px color-mix(in srgb, var(--accent-color), transparent 60%);
+    color: var(--contrast-color);
+  }
+
+  #contact .btn-send i {
+    font-size: 1rem;
+    transition: transform 0.3s ease;
+  }
+
+  #contact .btn-send:hover i {
+    transform: translateX(3px);
+  }
+
+  #contact .map-wrapper {
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid color-mix(in srgb, var(--accent-color), transparent 80%);
+    box-shadow: 0 8px 32px color-mix(in srgb, var(--accent-color), transparent 88%);
+  }
+
+  @media (max-width: 767px) {
+    #contact .contact-info-panel,
+    #contact .form-card {
+      padding: 1.75rem 1.25rem;
+    }
+    #contact .contact-info-panel h2,
+    #contact .form-card h2 {
+      font-size: 1.55rem;
+    }
+  }
+</style>
+
+<div class="page-title">
+    <div class="heading">
+        <div class="container">
+            <div class="row d-flex justify-content-center text-center">
+                <div class="col-lg-8">
+                    <h1 class="heading-title">Contact Us</h1>
+                    <p class="mb-0">Have a question about a property or want to list yours? We're here to help.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <nav class="breadcrumbs">
+        <div class="container">
+            <ol>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li class="current">Contact</li>
+            </ol>
+        </div>
+    </nav>
+</div>
+
+<section class="section" id="contact">
+    <div class="container" data-aos="fade-up">
+
+        <div class="row gy-4 align-items-stretch">
+
+            <div class="col-lg-5" data-aos="fade-right" data-aos-delay="100">
+                <div class="contact-info-panel">
+
+                    <div class="section-badge">
+                        <i class="bi bi-chat-dots"></i>
+                        <span>Get in Touch</span>
+                    </div>
+
+                    <h2>We'd Love to Hear From You</h2>
+                    <p class="lead-text">Our team typically responds within 24 hours on business days. Don't hesitate to reach out.</p>
+
+                    <div class="contact-item" data-aos="fade-up" data-aos-delay="200">
+                        <div class="ci-icon"><i class="bi bi-geo-alt"></i></div>
+                        <div>
+                            <div class="ci-label">Address</div>
+                            <p class="ci-value">Macedonia</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-item" data-aos="fade-up" data-aos-delay="300">
+                        <div class="ci-icon"><i class="bi bi-telephone"></i></div>
+                        <div>
+                            <div class="ci-label">Phone</div>
+                            <p class="ci-value">+389 2 123 456</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-item" data-aos="fade-up" data-aos-delay="400">
+                        <div class="ci-icon"><i class="bi bi-envelope"></i></div>
+                        <div>
+                            <div class="ci-label">Email</div>
+                            <p class="ci-value">info@nestquest.mk</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-item" data-aos="fade-up" data-aos-delay="500">
+                        <div class="ci-icon"><i class="bi bi-clock"></i></div>
+                        <div>
+                            <div class="ci-label">Working Hours</div>
+                            <p class="ci-value">Mon – Fri: 9:00 AM – 6:00 PM<br>Saturday: 10:00 AM – 3:00 PM</p>
+                        </div>
+                    </div>
+
+                    <hr class="divider">
+
+                    <p class="follow-label">Follow Us</p>
+                    <div class="social-links" data-aos="fade-up" data-aos-delay="600">
+                        <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+                        <a href="#" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-lg-7" data-aos="fade-left" data-aos-delay="200">
+                <div class="form-card">
+
+                    <div class="section-badge">
+                        <i class="bi bi-send"></i>
+                        <span>Send a Message</span>
+                    </div>
+
+                    <h2>How Can We Help?</h2>
+                    <p class="form-sub">Fill in the form below and we'll get back to you as soon as possible.</p>
+
+                    <form action="{% url 'contact' %}" method="post" class="php-email-form">
+                        {% csrf_token %}
+
+                        <div class="row gy-3">
+
+                            <div class="col-md-6">
+                                <label class="form-label">First Name <span style="color: #aaa;">*</span></label>
+                                <input type="text" name="first_name" class="form-control" placeholder="Your first name" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Last Name <span style="color: #aaa;">*</span></label>
+                                <input type="text" name="last_name" class="form-control" placeholder="Your last name" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Email <span style="color: #aaa;">*</span></label>
+                                <input type="email" name="email" class="form-control" placeholder="your@email.com" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Phone <span style="font-weight:400;opacity:.6;">(optional)</span></label>
+                                <input type="tel" name="phone" class="form-control" placeholder="+389 ...">
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label">Subject</label>
+                                <div class="custom-select-wrap" id="subjectWrap">
+                                    <div class="custom-select-trigger" id="subjectTrigger" tabindex="0">
+                                        <span id="subjectLabel">Select a topic...</span>
+                                        <i class="bi bi-chevron-down cs-arrow"></i>
+                                    </div>
+                                    <div class="custom-select-dropdown" id="subjectDropdown">
+                                        <div class="custom-option placeholder-opt" data-value="">Select a topic...</div>
+                                        <div class="custom-option" data-value="buying">I'm looking to buy</div>
+                                        <div class="custom-option" data-value="renting">I'm looking to rent</div>
+                                        <div class="custom-option" data-value="selling">I want to list my property</div>
+                                        <div class="custom-option" data-value="general">General inquiry</div>
+                                    </div>
+                                    <input type="hidden" name="subject" id="subjectInput" value="">
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label">Message <span style="color: #aaa;">*</span></label>
+                                <textarea name="message" class="form-control" rows="5" placeholder="Tell us how we can help you..." required></textarea>
+                            </div>
+
+                            <div class="col-12 mt-1">
+                                <button type="submit" class="btn-send">
+                                    <i class="bi bi-send"></i> Send Message
+                                </button>
+                            </div>
+
+                        </div>
+                        <div class="loading">Processing your message...</div>
+                        <div class="error-message"></div>
+                        <div class="sent-message">Your message has been sent successfully!</div>
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="mt-5" data-aos="fade-up" data-aos-delay="300">
+            <div class="map-wrapper">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d94952.68879099584!2d21.37480!3d41.99646!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1354159131e4843f%3A0x76e6e400c8622c93!2sSkopje!5e0!3m2!1sen!2smk!4v1234567890"
+                    width="100%"
+                    height="380"
+                    style="border:0; display:block;"
+                    allowfullscreen=""
+                    loading="lazy">
+                </iframe>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<script>
+(function () {
+    const trigger   = document.getElementById('subjectTrigger');
+    const dropdown  = document.getElementById('subjectDropdown');
+    const label     = document.getElementById('subjectLabel');
+    const input     = document.getElementById('subjectInput');
+    const options   = dropdown.querySelectorAll('.custom-option');
+
+    function open()  { trigger.classList.add('open');  dropdown.classList.add('open'); }
+    function close() { trigger.classList.remove('open'); dropdown.classList.remove('open'); }
+    function toggle(){ trigger.classList.contains('open') ? close() : open(); }
+
+    trigger.addEventListener('click', toggle);
+    trigger.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+        if (e.key === 'Escape') close();
+    });
+
+    options.forEach(function (opt) {
+        opt.addEventListener('click', function () {
+            options.forEach(function (o) { o.classList.remove('selected'); });
+            opt.classList.add('selected');
+            label.textContent = opt.textContent;
+            input.value = opt.dataset.value;
+            trigger.classList.toggle('has-value', opt.dataset.value !== '');
+            close();
+        });
+    });
+
+    document.addEventListener('click', function (e) {
+        if (!document.getElementById('subjectWrap').contains(e.target)) close();
+    });
+})();
+</script>
+
+{% endblock %}

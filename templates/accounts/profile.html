@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% block title %}My Profile{% endblock %}
+
+{% block content %}
+
+    <section class="section">
+        <div class="container">
+
+            <div class="section-title">
+                <h2>My Profile</h2>
+            </div>
+
+            <div class="row g-4">
+
+                <div class="col-lg-4">
+                    <div class="card shadow-sm">
+                        <div class="card-body p-4">
+
+                            <h5 class="mb-3">Personal information</h5>
+
+                            <form method="post">
+                                {% csrf_token %}
+
+                                <div class="mb-3">
+                                    <label class="form-label">Phone</label>
+                                    <input type="text"
+                                           name="phone"
+                                           value="{{ profile.phone }}"
+                                           class="form-control">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">City</label>
+                                    <input type="text"
+                                           name="city"
+                                           value="{{ profile.city }}"
+                                           class="form-control">
+                                </div>
+
+                                <button type="submit" class="btn w-100" style="background-color: var(--accent-color); color: var(--contrast-color); border: none;">
+                                    Save changes
+                                </button>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-8">
+                    <div class="card shadow-sm">
+                        <div class="card-body p-4">
+
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="mb-0">My listings</h5>
+                                <a href="{% url 'create_property' %}" class="btn btn-sm btn-outline-primary">
+                                    + Create listing
+                                </a>
+                            </div>
+
+                            {% if properties %}
+                                <div class="list-group list-group-flush">
+
+                                    {% for property in properties %}
+                                        <div class="list-group-item py-3">
+
+                                            <div class="d-flex justify-content-between align-items-start">
+                                                <div>
+                                                    <h6 class="mb-1">{{ property.name }}</h6>
+                                                    <div class="property-badges mt-1">
+                                                        {% if property.status == "pending" %}
+                                                            <span class="badge bg-warning">Pending</span>
+                                                        {% elif property.status == "approved" %}
+                                                            <span class="badge bg-success">Approved</span>
+                                                        {% elif property.status == "rejected" %}
+                                                            <span class="badge bg-danger">Rejected</span>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+
+                                                <div class="d-flex gap-2">
+                                                    <a href="{% url 'edit_property' property.id %}"
+                                                       class="btn btn-sm btn-outline-secondary">
+                                                        Edit
+                                                    </a>
+
+                                                    <form method="post"
+                                                          action="{% url 'delete_property' property.id %}">
+                                                        {% csrf_token %}
+                                                        <button type="submit"
+                                                                class="btn btn-sm btn-outline-danger"
+                                                                onclick="return confirm('Are you sure?')">
+                                                            Delete
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    {% endfor %}
+
+                                </div>
+                            {% else %}
+                                <p class="text-muted mb-0">
+                                    You don’t have any listings yet.
+                                </p>
+                            {% endif %}
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+{% endblock %}

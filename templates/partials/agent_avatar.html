@@ -1,0 +1,10 @@
+{% load static %}
+
+{% if profile_photo %}
+    <img src="{{ profile_photo.url }}" alt="{{ agent_name }}" class="{{ img_class }}">
+{% else %}
+    <div class="{{ img_class }} d-flex align-items-center justify-content-center"
+         style="background:#e9ecef;border-radius:50%;flex-shrink:0;">
+        <i class="bi bi-person-fill" style="color:#adb5bd;font-size:{{ icon_size|default:'1.1rem' }};line-height:1;"></i>
+    </div>
+{% endif %}

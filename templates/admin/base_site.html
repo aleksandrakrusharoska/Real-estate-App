@@ -1,0 +1,41 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block extrahead %}
+{{ block.super }}
+<link href="{% static 'assets/vendor/select2/css/select2.min.css' %}" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="{% static 'assets/vendor/select2/js/select2.min.js' %}"></script>
+
+<style>
+.select2-results__option--highlighted {
+    background-color: #2c7a7b !important;
+    color: white !important;
+}
+
+.select2-results__option[aria-selected="true"] {
+    background-color: #2c7a7b !important;
+    color: white !important;
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected],
+.select2-container--default .select2-results__option[aria-selected="true"] {
+    background-color: #2c7a7b !important;
+}
+
+.select2-selection__rendered,
+.select2-selection--single {
+    color: #2c7a7b !important;
+    font-weight: 500;
+}
+</style>
+
+<script>
+$(document).ready(function() {
+    $('select').not('.select2-hidden-accessible').select2({
+        width: '100%',
+        minimumResultsForSearch: Infinity
+    });
+});
+</script>
+{% endblock %}

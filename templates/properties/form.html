@@ -1,0 +1,455 @@
+{% extends "base.html" %}
+{% block body_class %}inner-page{% endblock %}
+
+{% load static %}
+
+{% block content %}
+
+    <section class="section">
+        <div class="container">
+
+            <div class="section-title">
+                <h2>
+                    {% if property %}
+                        Edit listing
+                    {% else %}
+                        Create listing
+                    {% endif %}
+                </h2>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+
+                    <div class="card shadow-sm">
+                        <div class="card-body p-4">
+
+                            <form method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+
+                                {% if form.errors %}
+                                    <div class="alert alert-danger">
+                                        {{ form.errors }}
+                                    </div>
+                                {% endif %}
+
+                                <div class="mb-3">
+                                    <label class="form-label">Property name <span style="color: #adb5bd;">*</span></label>
+                                    {{ form.name }}
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Property type</label>
+                                    {{ form.property_type }}
+                                </div>
+                            
+                                <div class="mb-3">
+                                     <label class="form-label">Sale/Rent</label>
+                                    {{ form.listing_type }}
+                                 </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Price (€)</label>
+                                        {{ form.price }}
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Area (m²) <span style="color: #adb5bd;">*</span></label>
+                                        {{ form.area }}
+                                    </div>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="form-label">Features</label>
+                                    {{ form.features }}
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="form-label">Other features</label>
+                                    {{ form.custom_features }}
+                                </div>
+
+                                <div id="room-fields">
+                                    <div class="row">
+                                        <div class="col-md-4 mb-3">
+                                            <label class="form-label">Rooms</label>
+                                            {{ form.rooms }}
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label class="form-label">Bathrooms</label>
+                                            {{ form.bathrooms }}
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label class="form-label">Bedrooms</label>
+                                            {{ form.bedrooms }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">City <span style="color: #adb5bd;">*</span></label>
+                                    {{ form.city }}
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Location / Neighborhood</label>
+                                    {{ form.location }}
+                                </div>
+
+                                <div class="mb-3">
+
+                                    <label class="form-label">Description <span style="color: #adb5bd;">*</span></label>
+
+                                    <div class="mb-3">
+                                        <label class="form-label small">AI instructions (optional)</label>
+                                        {{ form.ai_prompt }}
+                                    </div>
+
+                                    <div class="d-flex align-items-center gap-2 mb-2">
+                                        <button type="button"
+                                                class="btn btn-light border d-flex align-items-center gap-2 px-3 py-2"
+                                                id="generate-description-btn"
+                                                style="border-radius: 10px;">
+                                            <span style="font-size: 16px;">✨</span>
+                                            <span class="fw-medium">Generate description</span>
+                                        </button>
+
+                                        <small class="text-muted">
+                                            Automatically using AI
+                                        </small>
+                                    </div>
+
+                                    <small id="ai-loading" class="text-muted d-none d-block mb-2">
+                                        Generating description...
+                                    </small>
+
+                                    {{ form.description }}
+
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="form-label">Upload images</label>
+                                    {{ form.images }}
+                                    <small class="text-muted d-block mt-2">
+                                        You can select multiple images. Before saving, you can remove any selected
+                                        image.
+                                    </small>
+                                </div>
+
+                                <div id="new-image-preview" class="row mb-4"></div>
+
+                                {% if property and property.images.exists %}
+                                    <div class="mb-4">
+                                        <label class="form-label">Existing images</label>
+                                        <div class="row">
+                                            {% for img in property.images.all %}
+                                                <div class="col-md-3 mb-3">
+                                                    <div class="card shadow-sm border-0 h-100">
+                                                        <img src="{{ img.image.url }}"
+                                                             class="card-img-top rounded-top"
+                                                             style="height:160px; object-fit:cover;">
+
+                                                        <div class="card-body text-center p-2">
+                                                            <div class="form-check d-flex justify-content-center align-items-center gap-2 mb-2">
+                                                                <input class="form-check-input"
+                                                                       type="radio"
+                                                                       name="cover_image"
+                                                                       value="{{ img.id }}"
+                                                                       id="cover_{{ img.id }}"
+                                                                       {% if img.is_cover %}checked{% endif %}>
+                                                                <label class="form-check-label"
+                                                                       for="cover_{{ img.id }}">
+                                                                    Cover
+                                                                </label>
+                                                            </div>
+
+                                                            <div class="form-check d-flex justify-content-center align-items-center gap-2">
+                                                                <input class="form-check-input"
+                                                                       type="checkbox"
+                                                                       name="delete_images"
+                                                                       value="{{ img.id }}"
+                                                                       id="delete_{{ img.id }}">
+                                                                <label class="form-check-label text-danger"
+                                                                       for="delete_{{ img.id }}">
+                                                                    Delete
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                {% endif %}
+
+                                <button type="submit" class="btn w-100" style="background-color: var(--accent-color); color: var(--contrast-color); border: none;">
+                                    {% if property %}Save changes{% else %}Create property{% endif %}
+                                </button>
+
+                            </form>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const propertyType = document.getElementById("id_property_type");
+            const roomFields = document.getElementById("room-fields");
+
+            function toggleRooms() {
+                if (!propertyType || !roomFields) return;
+
+                if (propertyType.value === "land") {
+                    roomFields.style.display = "none";
+                } else {
+                    roomFields.style.display = "block";
+                }
+            }
+
+            toggleRooms();
+
+            if (propertyType) {
+                propertyType.addEventListener("change", toggleRooms);
+            }
+
+
+            if (window.jQuery && document.getElementById("features-select")) {
+                $("#features-select").select2({
+                    placeholder: "Select features",
+                    width: "100%"
+                });
+            }
+
+
+            const input = document.getElementById("id_images");
+            const previewContainer = document.getElementById("new-image-preview");
+            const form = input ? input.closest("form") : null;
+
+            if (!input || !previewContainer || !form) return;
+
+            let selectedFiles = new DataTransfer();
+            let selectedCoverIndex = null;
+
+            function removeOldHiddenCoverInput() {
+                const oldInput = document.getElementById("new-cover-image-hidden");
+                if (oldInput) oldInput.remove();
+            }
+
+            function updateHiddenCoverInput() {
+                removeOldHiddenCoverInput();
+
+                if (selectedCoverIndex !== null) {
+                    const hiddenInput = document.createElement("input");
+                    hiddenInput.type = "hidden";
+                    hiddenInput.name = "new_cover_image";
+                    hiddenInput.id = "new-cover-image-hidden";
+                    hiddenInput.value = selectedCoverIndex;
+                    form.appendChild(hiddenInput);
+                }
+            }
+
+            function renderPreviews() {
+                previewContainer.innerHTML = "";
+
+                Array.from(selectedFiles.files).forEach((file, index) => {
+                    if (!file.type.startsWith("image/")) return;
+
+                    const reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        const checked = selectedCoverIndex === index ? "checked" : "";
+
+                        const col = document.createElement("div");
+                        col.className = "col-md-3 mb-3";
+
+                        col.innerHTML = `
+                            <div class="card shadow-sm border-0 h-100">
+                                <img src="${e.target.result}"
+                                     class="card-img-top rounded-top"
+                                     style="height:160px; object-fit:cover;">
+
+                                <div class="card-body text-center p-2">
+                                    <div class="small text-truncate mb-2">${file.name}</div>
+
+                                    <div class="form-check d-flex justify-content-center align-items-center gap-2 mb-2">
+                                        <input class="form-check-input new-cover-radio"
+                                               type="radio"
+                                               name="new_cover_preview"
+                                               value="${index}"
+                                               id="new_cover_${index}"
+                                               ${checked}>
+                                        <label class="form-check-label" for="new_cover_${index}">
+                                            Cover
+                                        </label>
+                                    </div>
+
+                                    <button type="button"
+                                            class="btn btn-sm btn-outline-danger discard-btn"
+                                            data-index="${index}">
+                                        Discard
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+
+                        previewContainer.appendChild(col);
+                    };
+
+                    reader.readAsDataURL(file);
+                });
+
+                updateHiddenCoverInput();
+            }
+
+            input.addEventListener("change", function () {
+
+                if (input.files) {
+                    Array.from(input.files).forEach(file => {
+                        if (file instanceof File) {
+                            selectedFiles.items.add(file);
+                        }
+                    });
+                }
+
+                input.files = selectedFiles.files;
+
+                if (selectedFiles.files.length > 0 && selectedCoverIndex === null) {
+                    selectedCoverIndex = 0;
+                }
+
+                renderPreviews();
+            });
+
+            previewContainer.addEventListener("click", function (e) {
+                if (e.target.classList.contains("discard-btn")) {
+                    const indexToRemove = parseInt(e.target.dataset.index, 10);
+                    const newFileList = new DataTransfer();
+
+                    Array.from(selectedFiles.files).forEach((file, index) => {
+                        if (index !== indexToRemove) {
+                            if (file instanceof File) {
+                                newFileList.items.add(file);
+                            }
+                        }
+                    });
+
+                    selectedFiles = newFileList;
+
+                    if (selectedCoverIndex === indexToRemove) {
+                        selectedCoverIndex = selectedFiles.files.length > 0 ? 0 : null;
+                    } else if (selectedCoverIndex !== null && selectedCoverIndex > indexToRemove) {
+                        selectedCoverIndex -= 1;
+                    }
+
+                    input.files = selectedFiles.files;
+                    renderPreviews();
+                }
+            });
+
+            previewContainer.addEventListener("change", function (e) {
+                if (e.target.classList.contains("new-cover-radio")) {
+                    selectedCoverIndex = parseInt(e.target.value, 10);
+                    updateHiddenCoverInput();
+
+                    const existingCoverRadios = document.querySelectorAll('input[name="cover_image"]');
+                    existingCoverRadios.forEach(radio => {
+                        radio.checked = false;
+                    });
+                }
+            });
+
+            const existingCoverRadios = document.querySelectorAll('input[name="cover_image"]');
+            existingCoverRadios.forEach(radio => {
+                radio.addEventListener("change", function () {
+                    if (this.checked) {
+                        selectedCoverIndex = null;
+                        updateHiddenCoverInput();
+
+                        const previewRadios = document.querySelectorAll(".new-cover-radio");
+                        previewRadios.forEach(r => {
+                            r.checked = false;
+                        });
+                    }
+                });
+            });
+
+
+            const generateBtn = document.getElementById("generate-description-btn");
+            const loadingText = document.getElementById("ai-loading");
+            const descriptionField = document.getElementById("description-field");
+
+            if (!generateBtn || !descriptionField) return;
+
+            function getValue(id) {
+                const el = document.getElementById(id);
+                return el ? el.value : "";
+            }
+
+            generateBtn.addEventListener("click", async function () {
+                const formData = new FormData();
+
+                formData.append("name", getValue("id_name"));
+                formData.append("property_type", getValue("id_property_type"));
+                formData.append("city", getValue("id_city"));
+                formData.append("location", getValue("id_location"));
+                formData.append("price", getValue("id_price"));
+                formData.append("area", getValue("id_area"));
+                formData.append("rooms", getValue("id_rooms"));
+                formData.append("bedrooms", getValue("id_bedrooms"));
+                formData.append("bathrooms", getValue("id_bathrooms"));
+                formData.append("custom_features", getValue("id_custom_features"));
+                formData.append("ai_prompt", getValue("id_ai_prompt"));
+
+                const featuresSelect = document.getElementById("features-select");
+                if (featuresSelect) {
+                    Array.from(featuresSelect.selectedOptions).forEach(option => {
+                        formData.append("features", option.value);
+                    });
+                }
+
+                generateBtn.disabled = true;
+                if (loadingText) {
+                    loadingText.classList.remove("d-none");
+                }
+
+                try {
+                    const response = await fetch("{% url 'generate_description' %}", {
+                        method: "POST",
+                        headers: {
+                            "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]").value
+                        },
+                        body: formData
+                    });
+
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(data.error || "Something went wrong while generating the description.");
+                    }
+
+                    if (data.description) {
+                        descriptionField.value = data.description;
+                    } else {
+                        throw new Error("No description was returned.");
+                    }
+
+                } catch (error) {
+                    alert(error.message || "Failed to generate description.");
+                } finally {
+                    generateBtn.disabled = false;
+                    if (loadingText) {
+                        loadingText.classList.add("d-none");
+                    }
+                }
+            });
+        });
+    </script>
+
+{% endblock %}
+

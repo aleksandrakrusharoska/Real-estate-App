@@ -1,0 +1,13 @@
+groq==0.13.1
+asgiref==3.11.0
+python-decouple==3.8
+certifi==2026.2.25
+charset-normalizer==3.4.6
+Django==6.0.1
+django-jazzmin==3.0.1
+idna==3.11
+pillow==12.1.1
+requests==2.33.0
+sqlparse==0.5.5
+tzdata==2025.3
+urllib3==2.6.3

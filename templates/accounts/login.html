@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
+
+{% block content %}
+    <section class="section">
+        <div class="container">
+
+            <div class="row justify-content-center">
+                <div class="col-lg-5 col-md-7">
+
+                    <div class="card shadow-sm">
+                        <div class="card-body p-4">
+
+                            <div class="section-title text-center mb-2">
+                                <h2>Login</h2>
+                                <p class="text-muted mb-0">
+                                    Sign in to your account
+                                </p>
+                            </div>
+
+                            <form method="post">
+                                {% csrf_token %}
+
+                                {% if form.non_field_errors %}
+                                    <div class="alert alert-danger">
+                                        {{ form.non_field_errors }}
+                                    </div>
+                                {% endif %}
+
+                                <div class="mb-3">
+                                    <label for="id_username" class="form-label">Username</label>
+                                    {{ form.username }}
+                                    {% if form.username.errors %}
+                                        <div class="text-danger small">
+                                            {{ form.username.errors }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="mb-4 position-relative">
+                                    <label for="id_password" class="form-label">Password</label>
+                                    {{ form.password }}
+
+                                    <span class="toggle-password" onclick="togglePassword('id_password', this)">
+                                        <i class="bi bi-eye"></i>
+                                    </span>
+
+                                    {% if form.password.errors %}
+                                        <div class="text-danger small">
+                                            {{ form.password.errors }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <button type="submit" class="btn w-100" style="background-color: var(--accent-color); color: var(--contrast-color); border: none;">
+                                    Login
+                                </button>
+                            </form>
+
+                            <div class="text-center mt-3">
+                                <small class="text-muted">
+                                    Don’t have an account?
+                                    <a href="{% url 'register' %}">Register</a>
+                                </small>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+{% endblock %}

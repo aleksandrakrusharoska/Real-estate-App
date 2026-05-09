@@ -1,0 +1,135 @@
+{% load static %}
+
+<footer id="footer" class="footer position-relative">
+
+    <div class="container" style="padding-left: 100px;">
+        <div class="row gy-5">
+
+            <div class="col-lg-4">
+                <div class="footer-content">
+                    <a href="{% url 'home' %}" class="logo d-flex align-items-center mb-4">
+                        <span class="sitename">NestQuest</span>
+                    </a>
+                    <p class="mb-4">Your trusted partner in finding the perfect property. We connect buyers, sellers,
+                        and renters with verified listings across the region.
+                    </p>
+
+                    <div class="newsletter-form">
+                        <h5>Stay Updated</h5>
+                        <form action="#" method="post" class="php-email-form">
+                            <div class="input-group">
+                                <input type="email" name="email" class="form-control" placeholder="Enter your email"
+                                       required="">
+                                <button type="submit" class="btn-subscribe">
+                                    <i class="bi bi-send"></i>
+                                </button>
+                            </div>
+                            <div class="loading">Loading</div>
+                            <div class="error-message"></div>
+                            <div class="sent-message">Thank you for subscribing!</div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-lg-2 col-6" style="padding-left: 50px;">
+                <div class="footer-links">
+                    <h4>Navigation</h4>
+                    <ul>
+                        <li><a href="{% url 'home' %}"><i class="bi bi-chevron-right"></i> Home</a></li>
+                        <li><a href="{% url 'about' %}"><i class="bi bi-chevron-right"></i> About Us</a></li>
+                        <li><a href="{% url 'property_list' %}"><i class="bi bi-chevron-right"></i> Properties</a></li>
+                        <li><a href="{% url 'blog_list' %}"><i class="bi bi-chevron-right"></i> Blog</a></li>
+                        <li><a href="{% url 'contact' %}"><i class="bi bi-chevron-right"></i> Contact</a></li>
+                        {% if user.is_authenticated %}
+                            <li><a href="{% url 'profile' %}"><i class="bi bi-chevron-right"></i> My Profile</a></li>
+                        {% else %}
+                            <li><a href="{% url 'login' %}"><i class="bi bi-chevron-right"></i> Login</a></li>
+                            <li><a href="{% url 'register' %}"><i class="bi bi-chevron-right"></i> Register</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+
+
+            <div class="col-lg-2 col-6" style="padding-left: 50px;">
+                <div class="footer-links">
+                    <h4>Property Types</h4>
+                    <ul>
+                        <li><a href="{% url 'property_list' %}?property_type=apartment"><i class="bi bi-chevron-right"></i> Apartments</a></li>
+                        <li><a href="{% url 'property_list' %}?property_type=commercial"><i class="bi bi-chevron-right"></i> Commercial</a></li>
+                        <li><a href="{% url 'property_list' %}?property_type=house"><i class="bi bi-chevron-right"></i> Houses</a></li>
+                        <li><a href="{% url 'property_list' %}?property_type=land"><i class="bi bi-chevron-right"></i> Land</a></li>
+                        <li><a href="{% url 'property_list' %}?property_type=studio"><i class="bi bi-chevron-right"></i> Studios</a></li>
+                        <li><a href="{% url 'property_list' %}?property_type=villa"><i class="bi bi-chevron-right"></i> Villas</a></li>
+                    </ul>
+                </div>
+            </div>
+
+
+            <div class="col-lg-4" style="padding-left: 50px;">
+                <div class="footer-contact">
+                    <h4>Get in Touch</h4>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="bi bi-geo-alt"></i>
+                        </div>
+                        <div class="contact-info">
+                            <p>Macedonia</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="bi bi-telephone"></i>
+                        </div>
+                        <div class="contact-info">
+                            <p>+389 2 123 456</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="bi bi-envelope"></i>
+                        </div>
+                        <div class="contact-info">
+                            <p>info@nestquest.mk</p>
+                        </div>
+                    </div>
+
+                    <div class="social-links">
+                        <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer"><i class="bi bi-facebook"></i></a>
+                        <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer"><i class="bi bi-instagram"></i></a>
+                        <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer"><i class="bi bi-linkedin"></i></a>
+                        <a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer"><i class="bi bi-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+        </div>
+    </div>
+
+
+    <div class="footer-bottom">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="copyright">
+                        <p>© <span>Copyright</span> <strong class="px-1 sitename">NestQuest</strong> <span>All Rights Reserved</span></p>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="footer-bottom-links">
+                        <a href="#">Privacy Policy</a>
+                        <a href="#">Terms of Service</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</footer>

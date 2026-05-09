@@ -1,0 +1,403 @@
+{% extends "base.html" %}
+{% block body_class %}property-details-page{% endblock %}
+
+{% load static %}
+
+{% block content %}
+
+<style>
+.lux-gallery { margin-bottom: 20px; }
+
+.lux-stage {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--default-color), transparent 95%);
+  box-shadow: 0 4px 20px color-mix(in srgb, var(--default-color), transparent 90%);
+}
+
+.lux-image-wrap {
+  position: relative;
+  width: 100%;
+  height: 500px;
+  overflow: hidden;
+}
+
+.lux-main-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  will-change: opacity, transform;
+}
+
+.lux-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: color-mix(in srgb, var(--surface-color), transparent 10%);
+  border: none;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--default-color);
+  font-size: 18px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  z-index: 5;
+  backdrop-filter: blur(8px);
+}
+.lux-nav:hover {
+  background-color: var(--accent-color);
+  color: var(--contrast-color);
+}
+.lux-nav--prev { left: 15px; }
+.lux-nav--next { right: 15px; }
+
+.lux-counter {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  background: color-mix(in srgb, var(--surface-color), transparent 15%);
+  backdrop-filter: blur(8px);
+  border-radius: 20px;
+  padding: 4px 12px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--default-font);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--default-color);
+  z-index: 5;
+}
+.lux-counter-sep { color: var(--accent-color); }
+
+.lux-progress-track {
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 100%;
+  height: 3px;
+  background: color-mix(in srgb, var(--accent-color), transparent 80%);
+  z-index: 5;
+}
+.lux-progress-fill {
+  height: 100%;
+  background: var(--accent-color);
+  transition: width 0.4s ease;
+}
+
+.lux-filmstrip {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.lux-thumb {
+  flex: 1;
+  min-width: 90px;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color 0.3s ease;
+}
+.lux-thumb:hover { border-color: color-mix(in srgb, var(--accent-color), transparent 50%); }
+.lux-thumb.is-active { border-color: var(--accent-color); }
+
+.lux-thumb img {
+  width: 100%;
+  height: 80px;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.35s ease;
+}
+.lux-thumb:hover img { transform: scale(1.05); }
+.lux-thumb-border { display: none; }
+
+@media (max-width: 768px) {
+  .lux-image-wrap { height: 300px; }
+  .lux-thumb { min-width: 70px; }
+  .lux-thumb img { height: 60px; }
+}
+</style>
+
+    <div class="page-title">
+        <div class="heading">
+            <div class="container">
+                <div class="row d-flex justify-content-center text-center">
+                    <div class="col-lg-8">
+                        <h1 class="heading-title">Property Details</h1>
+                        <p class="mb-0">
+                            Detailed overview of the property at {{ property.location }}, {{ property.city }}.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <nav class="breadcrumbs">
+            <div class="container">
+                <ol>
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li class="current">Property Details</li>
+                </ol>
+            </div>
+        </nav>
+    </div><section id="property-details" class="property-details section">
+
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+            <div class="row gy-4">
+
+                <div class="col-lg-8">
+
+                    <div class="lux-gallery" data-aos="fade-up" data-aos-delay="200">
+
+                        <div class="lux-stage">
+                            <div class="lux-image-wrap">
+                                {% with cover=property.cover_image %}
+                                    {% if cover %}
+                                        <img id="main-image"
+                                             src="{{ cover.image.url }}"
+                                             class="lux-main-img"
+                                             alt="Property image">
+                                    {% else %}
+                                        <div style="height:520px;display:flex;align-items:center;justify-content:center;color:#666;">No images available</div>
+                                    {% endif %}
+                                {% endwith %}
+                                <div class="lux-vignette"></div>
+                            </div>
+
+                            <button class="lux-nav lux-nav--prev" type="button" aria-label="Previous image">
+                                <i class="bi bi-chevron-left"></i>
+                            </button>
+                            <button class="lux-nav lux-nav--next" type="button" aria-label="Next image">
+                                <i class="bi bi-chevron-right"></i>
+                            </button>
+
+                            <div class="lux-counter">
+                                <span class="lux-counter-current">01</span>
+                                <span class="lux-counter-sep">/</span>
+                                <span class="lux-counter-total">01</span>
+                            </div>
+
+                            <div class="lux-progress-track">
+                                <div class="lux-progress-fill"></div>
+                            </div>
+                        </div>
+
+                        {% if property.images.count > 1 %}
+                            <div class="lux-filmstrip">
+                                {% for img in property.images.all %}
+                                    <div class="lux-thumb{% if forloop.first %} is-active{% endif %}"
+                                         data-image="{{ img.image.url }}"
+                                         data-index="{{ forloop.counter0 }}">
+                                        <img src="{{ img.image.url }}" alt="Property view {{ forloop.counter }}">
+                                        <div class="lux-thumb-border"></div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+
+                    </div><div class="property-description" data-aos="fade-up" data-aos-delay="300">
+                        <h3>About This Property</h3>
+                        <p>{{ property.description|linebreaks }}</p>
+                    </div><div class="property-amenities" data-aos="fade-up" data-aos-delay="400">
+                        <h3>Amenities & Features</h3>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h4>Interior Features</h4>
+                                <ul class="features-list">
+                                    {% for feature in property.features.all %}
+                                        <li><i class="bi bi-check-circle"></i>{{ feature.name }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <h4>Property Highlights</h4>
+                                <ul class="features-list">
+                                    <li><i class="bi bi-check-circle"></i>{{ property.property_type|title }}</li>
+                                    <li><i class="bi bi-check-circle"></i>{{ property.listing_type|title }}</li>
+                                    <li><i class="bi bi-check-circle"></i>Prime Location in {{ property.city }}</li>
+                                    <li><i class="bi bi-check-circle"></i>{{ property.area }} m² Living Space</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div><div class="property-map" data-aos="fade-up" data-aos-delay="500">
+                        <h3>Location</h3>
+                        <div id="map" style="height: 400px; width: 100%; border-radius: 5px;"
+                             data-lat="{{ property.latitude|default:0 }}"
+                             data-lon="{{ property.longitude|default:0 }}"></div>
+                      
+                    </div></div>
+
+                <div class="col-lg-4">
+
+                    <div class="property-overview sticky-top" data-aos="fade-up" data-aos-delay="200">
+                        <div class="price-tag">{{ property.formatted_price }}</div>
+                        <div class="property-status">{{ property.listing_type|title }}</div>
+
+                        <div class="property-address">
+                            <h4>{{ property.location }}</h4>
+                            <p>{{ property.city }}</p>
+                        </div>
+
+                        <div class="property-stats">
+                            <div class="stat-item">
+                                <i class="bi bi-house"></i>
+                                <div>
+                                    <span class="value">{{ property.bedrooms }}</span>
+                                    <span class="label">Bedrooms</span>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <i class="bi bi-droplet"></i>
+                                <div>
+                                    <span class="value">{{ property.bathrooms }}</span>
+                                    <span class="label">Bathrooms</span>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <i class="bi bi-rulers"></i>
+                                <div>
+                                    <span class="value">{{ property.area }}</span>
+                                    <span class="label">m² Area</span>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <i class="bi bi-tag"></i>
+                                <div>
+                                    <span class="value">{{ property.property_type|title }}</span>
+                                    <span class="label">Type</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="agent-info">
+                            <div class="agent-avatar">
+                                {% if property.owner.profile.photo %}
+                                    <img src="{{ property.owner.profile.photo.url }}" alt="{{ property.owner.get_full_name }}" class="img-fluid">
+                                {% else %}
+                                    <img src="{% static 'assets/img/real-estate/agent-8.webp' %}" alt="Agent" class="img-fluid">
+                                {% endif %}
+                            </div>
+                            <div class="agent-details">
+                                <h4>{{ property.owner.get_full_name|default:property.owner.username }}</h4>
+                                <p class="agent-title">Licensed Real Estate Agent</p>
+                                {% if property.owner.profile.phone %}
+                                    <p class="agent-phone"><i class="bi bi-telephone"></i>{{ property.owner.profile.phone }}</p>
+                                {% endif %}
+                                <p class="agent-email"><i class="bi bi-envelope"></i>{{ property.owner.email }}</p>
+                            </div>
+                        </div>
+                        <div class="contact-form">
+                            <h4>Schedule a Tour</h4>
+                            <form action="{% url 'property_details' property.id %}" method="post" class="php-email-form">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-12 form-group">
+                                        <input type="text" name="name" class="form-control" placeholder="Your Name *" required="">
+                                    </div>
+                                    <div class="col-12 form-group">
+                                        <input type="email" name="email" class="form-control" placeholder="Your Email *" required="">
+                                    </div>
+                                    <div class="col-12 form-group">
+                                        <input type="tel" name="phone" class="form-control" placeholder="Your Phone">
+                                    </div>
+                                    <div class="col-12 form-group">
+                                        <input type="text" name="subject" class="form-control" value="Tour Request: {{ property.name }}">
+                                    </div>
+                                    <div class="col-12 form-group">
+                                        <textarea class="form-control" name="message" rows="4" placeholder="Your Message"></textarea>
+                                    </div>
+                                    <div class="col-12 text-center">
+                                        <button type="submit" class="btn btn-primary">Schedule Tour</button>
+                                    </div>
+                                </div>
+                                <div class="loading">Processing your request...</div>
+                                <div class="error-message"></div>
+                                <div class="sent-message">Your tour request has been sent successfully!</div>
+                            </form>
+                        </div><div class="social-share">
+                            <h5>Share This Property</h5>
+                            <div class="share-buttons">
+                                <a href="#" class="share-btn facebook"><i class="bi bi-facebook"></i></a>
+                                <a href="#" class="share-btn twitter"><i class="bi bi-twitter"></i></a>
+                                <a href="#" class="share-btn whatsapp"><i class="bi bi-whatsapp"></i></a>
+                                <a href="#" class="share-btn email"><i class="bi bi-envelope"></i></a>
+                                <a href="#" class="share-btn print"><i class="bi bi-printer"></i></a>
+                            </div>
+                        </div></div></div>
+            </div>
+        </div>
+    </section>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const mainImg    = document.getElementById("main-image");
+            const thumbs     = Array.from(document.querySelectorAll(".lux-thumb"));
+            const prevBtn    = document.querySelector(".lux-nav--prev");
+            const nextBtn    = document.querySelector(".lux-nav--next");
+            const counterEl  = document.querySelector(".lux-counter-current");
+            const totalEl    = document.querySelector(".lux-counter-total");
+            const fillEl     = document.querySelector(".lux-progress-fill");
+
+            if (mainImg && thumbs.length > 0) {
+                const images = thumbs.map(t => t.dataset.image);
+                let current  = 0;
+                const pad    = n => String(n + 1).padStart(2, "0");
+
+                totalEl.textContent = pad(images.length - 1);
+                fillEl.style.width  = (100 / images.length) + "%";
+
+                function goTo(idx, dir) {
+                    if (idx === current) return;
+                    const sign = dir >= 0 ? -1 : 1;
+
+                    mainImg.style.transition = "opacity 0.32s ease, transform 0.32s ease";
+                    mainImg.style.opacity    = "0";
+                    mainImg.style.transform  = `scale(1.04) translateX(${sign * 24}px)`;
+
+                    setTimeout(() => {
+                        mainImg.src = images[idx];
+                        mainImg.style.transition = "opacity 0.38s ease, transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94)";
+                        mainImg.style.opacity    = "1";
+                        mainImg.style.transform  = "scale(1) translateX(0)";
+
+                        counterEl.textContent = pad(idx);
+                        fillEl.style.width    = ((idx + 1) / images.length * 100) + "%";
+
+                        thumbs.forEach(t => t.classList.remove("is-active"));
+                        thumbs[idx].classList.add("is-active");
+                        thumbs[idx].scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
+
+                        current = idx;
+                    }, 320);
+                }
+
+                thumbs.forEach((t, i) => t.addEventListener("click", () => goTo(i, i - current)));
+                prevBtn && prevBtn.addEventListener("click", () => goTo((current - 1 + images.length) % images.length, -1));
+                nextBtn && nextBtn.addEventListener("click", () => goTo((current + 1) % images.length, 1));
+            }
+
+            var mapEl = document.getElementById('map');
+            var lat = parseFloat(mapEl.dataset.lat) || 0;
+            var lon = parseFloat(mapEl.dataset.lon) || 0;
+            if (lat !== 0) {
+                var map = L.map('map').setView([lat, lon], 14);
+                L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+                }).addTo(map);
+                L.marker([lat, lon]).addTo(map);
+            }
+        });
+    </script>
+
+{% endblock %}
